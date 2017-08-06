@@ -1,0 +1,123 @@
+#parse ("common/iframe_page_header.htm")
+#parse ("common/macro.htm")
+  <link rel="stylesheet" type="text/css" href="${uicasePath}/css/specialtab.css" />
+  <script src="${contextPath}/common/js/common/jquery.form.js"></script>
+  <script type="text/javascript" src="${contextPath}/common/js/common/tinybox.js"></script>
+<body class="whitebg">
+  <div class="content_main">
+    <div class="contentinner">
+      <div class="place">
+        <div class="title">客户原始信息修改>基本信息</div>
+      </div>
+        <div class="tabplace">
+            <ul class="com-tab" >
+            	<li class="tab activeTab"><a href="${contextPath}/customer/firsthend/showCustomerInfoJn.page?id=${customerNm}">基本信息</a></li>
+         	</ul>
+        </div>
+      <form id="id_module_form" action="${contextPath}/product/productinformation/updateBaseCustomer.json"  method="post">
+         <div class="form-bd" id="formsId" style="margin-top: 0px;padding-top: 0px;">
+          <input type="hidden" id="id" name="id" value="$!{customerNm}" />
+          <table cellpadding="0" cellspacing="0" class="table-bd" border="1" bordercolor="#cccccc" style="width: 100%">
+            <colgroup>
+              <col width="10%" />
+              <col width="30%" />
+              <col width="10%" />
+              <col width="30%" />
+            </colgroup>
+              <tr><td class="titlec" colspan="4" style="text-align: center;">基本信息</td></tr>
+           
+             <tr>
+              <td class="titlefc3"><label for="khlx">客户名称:</label></td>
+              <td><input class="rinpsty"  type="text" id="chineseName" name="chineseName" value="$!customerInfor.chineseName" /></td>
+              <td class="titlefc3"><label for="qfjg">性别:</label></td>
+              <td><select id="sex" name="sex" class="rinpsty" > 
+              		<option value=""></option>
+              		#dict("SEX", $!customerInfor.sex)
+              	  </select>
+              </td>
+            </tr>
+            
+            <tr>
+              <td class="titlefc3"><label for="zjlx">证件类型:</label></td>
+              <td><select id="cardtype" name="cardtype" class="rinpsty" disabled="disabled"> 
+              		<option value=""></option>
+              		#dict("CARDTYPE", $!customerInfor.cardType)
+              	  </select>
+              </td>
+              <td class="titlefc3"><label for="zjhm">证件号码:</label></td>
+              <td><input class="rinpsty"  type="text" id="cardnum" name="cardnum" value="$!customerInfor.cardId" disabled="disabled"/></td>
+            </tr>
+            
+            
+            <tr>
+              <td class="titlefc3"><label for="qfjg">手机:</label></td>
+              <td><input class="rinpsty"  type="text" id="telephone" name="telephone" value="$!customerInfor.telephone" /></td>
+              <td class="titlefc3"><label for="sfcq">Email:</label></td>
+              <td><input class="rinpsty"  type="text" id="mail" name="mail" value="$!customerInfor.mail" /></td>
+            </tr>
+            
+            <tr>
+              <td class="titlefc3"><label for="qfjg">住宅地址:</label></td>
+              <td><input class="rinpsty"  type="text" id="residentialAddress" name="residentialAddress" value="$!customerInfor.residentialAddress" /></td>
+              <td class="titlefc3"><label for="sfcq">住宅电话:</label></td>
+              <td><input class="rinpsty"  type="text" id="homePhone" name="homePhone" value="$!customerInfor.homePhone" /></td>
+            </tr>
+           
+          
+          </table>
+        </div>
+      </form>
+      <div class="submit">
+     		<input type="button" onclick="updateClick();" value="修改" class="current"/>
+ 			<input type="button" onclick="returnClick();" value="返回" />
+ 			
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript">
+	var layout = new FormsLayout("formsId");
+	window.top.currentWindow.setLayout(layout);
+	#set ($formName = "'#id_module_form'")
+	
+	$(document).ready(function() {		
+		/* $("input[type='text']").attr("disabled",true);
+		$("input[type='radio']").attr("disabled",true);
+		$("input[type='checkbox']").attr("disabled",true);
+		$("select").attr("disabled",true); */
+		
+	});
+	
+	//返回
+	function returnClick(){
+		//window.location.href= contextPath + "/customer/customerInfor_wh_ty/browse.page";
+		// window.location.href= contextPath + "/customer/firsthend/browse.page" ;
+		window.location.href ="javascript:history.back()";
+	}
+	
+	//修改
+	function updateClick(){
+		$('#id_module_form').ajaxSubmit({
+			dataType : 'json',
+			type : "post",
+			success : function(data) {
+				if (data.success) {
+					Dialog.message(data.message,"提示", function() {
+						window.location.reload(true);
+					 });
+				} else {
+					Dialog.message(data.errors.errors[0].message);
+					return false;
+				}
+			},
+			error : function(data) {
+				Dialog.closeLoad();
+				Dialog.message("操作失败");
+				return false;
+			}
+		});
+	}
+  </script>
+   <script src="${contextPath}/js/customerInfor/customer_infor.js"></script>
+  
+</body>
+#parse ("common/iframe_page_footer.htm")

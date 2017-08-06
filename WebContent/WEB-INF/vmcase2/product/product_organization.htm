@@ -1,0 +1,113 @@
+#parse ("common/iframe_page_header.htm")
+  <link rel="stylesheet" type="text/css" href="${uicasePath}/css/tab.css" />
+  <style>
+  table#tab tr td{border:none;padding-left:10px;}
+  </style>
+<body>
+	<div class="content_main">
+		<div class="contentinner">
+		  <div class="place">
+	        <div class="title">产品审核</div>
+	      </div>
+			<form id="id_module_form"
+				action="${contextPath}/product/productpublic/insertCpjg.json">
+				<input type="hidden" id="productId" name="productId" value="${productId}">
+				<div class="forms" id="formsId">
+				<div style="border: 1px solid #bad3e0;padding: 15px;background: #d9edf7;margin-bottom:15px;">产品编号：<input id="seqno" name="seqno" value=""></div>
+           <table style="background:#eee;margin-bottom: 10px;" id="tab">
+						<colgroup>
+							<col width="25%" />
+							<col width="25%" />
+							<col width="25%" />
+							<col width="25%" />
+						</colgroup>
+						<tr>
+                          <td colspan="4" style="text-align:center;font-weight: bold;background-color:#dedede;">机构清单</td>
+                         </tr>
+					      #set($total = ($organization.size()/4)) 
+					      
+					      #foreach ($!index in [0 .. $total])
+					
+					      <tr>
+						  #set($current = $!index * 4 ) 
+						  #if($current<$organization.size())
+						     <td><input type="checkbox" name="organizationId" value="$organization.get($current).id"/> $organization.get($current).name</td>
+						  #end
+						  #set($current = $!index * 4+1 )
+						  #if($current<$organization.size())
+						     <td><input type="checkbox" name="organizationId" value="$organization.get($current).id"/> $organization.get($current).name</td>
+						  #end
+						  
+						  #set($current = $!index * 4+2 )
+						  #if($current<$organization.size())
+						     <td><input type="checkbox" name="organizationId" value="$organization.get($current).id"/> $organization.get($current).name</td>
+						  #end
+                          
+                          #set($current = $!index * 4+3 )
+						  #if($current<$organization.size())
+						     <td><input type="checkbox" name="organizationId" value="$organization.get($current).id"/> $organization.get($current).name</td>
+						  #end
+                        </tr>
+                        #end
+						</table> 
+						<input type="hidden" id="organizationIds" name="organizationIds" />
+				</div>
+				
+				
+			</form>
+
+			<div class="submit">
+				<input id="id_save_button" type="button"
+					value="确定" class="current" /> <input
+					type="button" onclick="javascript:history.go(-1);"
+					value="#i18n('button.cancel')" />
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript">
+	var layout=new FormsLayout("formsId");			
+	window.top.currentWindow.setLayout(layout);
+
+	#set ($formName = "'#id_module_form'")
+	 $(document).ready(function() {
+		 $("#id_save_button").click(function() {
+		        if ($($formName).valid()) {
+		         var organizationIds = "";
+		     	 $("input[name='organizationId']:checkbox").each(function(){
+		     		 if ($(this).attr("checked")){
+		     			organizationIds+=$(this).val()+","; 
+		     		}
+		     	  }
+		         );
+		     	 
+		     	 $("#organizationIds").val(organizationIds);
+		     	 var formjson = $($formName).serialize();
+		     /*      $.get($($formName).attr("action"), formjson, function(data, textStatus, jqXhr) {
+		            if (data.success) {
+		            
+		                navigateTo("${contextPath}/product/productpublic/browse.page");
+		              
+		            }
+		          }); */
+		          
+				     	$.ajax({
+		    				url : $($formName).attr("action"),
+		    				type : "get",
+		    				data : formjson,
+		    				success : function(data) {
+		    					if (data.success) {
+		    						 navigateTo("${contextPath}/product/productpublic/browse.page");
+		    						 topWin.Dialog.message("审核成功！");
+		    					}else{
+		    						topWin.Dialog.message(data.message);
+		    				    }
+		    				}
+		    		});
+		          
+		        }
+		      });
+	}); 
+	
+	
+	</script>
+	</body>
