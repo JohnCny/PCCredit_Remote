@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cardpay.pccredit.kd.dao.TypadKdCustomerDao">
+
+
+    
+
+<resultMap type="com.cardpay.pccredit.kd.model.TypadKdCustomer" id="TypadKdCustomer">
+ <result column="CREDIT_STATUS" property="CREDIT_STATUS" />
+ <result column="CREDIT_OVERDUE_TIMES" property="CREDIT_OVERDUE_TIMES" />
+<result column="LOAN_OVERDUE_TIMES" property="LOAN_OVERDUE_TIMES" />
+<result column="LOAN_BALAMT" property="LOAN_BALAMT" />
+<result column="GUARANTEED" property="GUARANTEED" />
+ <result column="NUM_OF_ECO_DEPEND" property="NUM_OF_ECO_DEPEND" />
+<result column="ANNUAL_INCOME_SPOUSE" property="ANNUAL_INCOME_SPOUSE" />
+ <result column="CHILD_EDU" property="CHILD_EDU" />
+<result column="SERVICE_LIFE" property="SERVICE_LIFE" />
+<result column="MAIN_BUSINESS_INCOME"  property="MAIN_BUSINESS_INCOME" />
+ <result column="CURRENT_ASSETS" property="CURRENT_ASSETS" />
+<result column="FIXED_ASSETS" property="FIXED_ASSETS" />
+<result column="SHORT_TERM_LIAB" property="SHORT_TERM_LIAB" />
+ <result column="OWNED_EQU" property="OWNED_EQU" />
+<result column="ANNUAL_DIS_INCOME" property="ANNUAL_DIS_INCOME" />
+<result column="OTHER_IMCOME" property="OTHER_IMCOME" />
+<result column="STOCK" property="STOCK" />
+ <result column="TOTAL_ASSETS" property="TOTAL_ASSETS" />
+<result column="TOTAL_LIAB" property="TOTAL_LIAB" />
+<result column="PAY_PRIVATE_USE" property="PAY_PRIVATE_USE" />
+
+<result property="ID" column="ID" />
+<result property="CUSTOMER_NAME" column="CUSTOMER_NAME" />
+<result property="CARD_ID" column="CARD_ID" />
+<result property="PHONE_NO" column="PHONE_NO" />
+<result property="APPLY_AMT" column="APPLY_AMT" />
+<result property="APPLY_ID1" column="APPLY_ID1" />
+<result property="LOAN_TERM" column="LOAN_TERM" />
+<result property="APPLY_TIME" column="APPLY_TIME" />
+<result property="REMARKS" column="REMARKS" />
+<result property="LOAN_STATE" column="LOAN_STATE" />
+<result property="APPLY_ID" column="APPLY_ID" />
+    <result column="FILE_NAME" property="FILE_NAME" />
+<result column="UPLOAD_TIME" property="UPLOAD_TIME" />
+ <result column="UPLOAD_PATH" property="UPLOAD_PATH" />
+ <result column="UPLOAD_COMPRESS_PATH" property="UPLOAD_COMPRESS_PATH" />
+<result column="MARITAL_STATUS" property="MARITAL_STATUS" />
+<result column="HIGH_EDU" property="HIGH_EDU" />
+<result column="DOMICILE" property="DOMICILE" />
+ <result column="MORTGAGE_HOUSES" property="MORTGAGE_HOUSES" />
+ <result column="OWN_HOUSES" property="OWN_HOUSES" />
+<result column="MORTGAGE_BALAMT" property="MORTGAGE_BALAMT" />
+<result column="OWN_VEHICLES" property="OWN_VEHICLES" />
+  </resultMap>
+
+
+<select id="selectSqCustomer" resultMap="TypadKdCustomer">
+select b.ID,b.CUSTOMER_NAME,b.CARD_ID,b.PHONE_NO,b.APPLY_AMT,b.LOAN_TERM,b.APPLY_TIME,b.LOAN_STATE,b.REMARKS,
+L.APPLY_ID as APPLY_ID ,s.APPLY_ID as APPLY_ID1
+ from customer_loan_apply b left join loan_data_upload l on l.apply_id=b.id
+left join supplementary_survey_data s on s.apply_id=b.id
+</select>
+
+
+
+<select id="selectImageType" resultMap="TypadKdCustomer">
+select * from loan_data_upload where apply_id=#{id} ORDER BY  upload_file_name 
+</select>
+</mapper>

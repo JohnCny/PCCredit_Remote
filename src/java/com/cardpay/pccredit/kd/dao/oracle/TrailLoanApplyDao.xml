@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cardpay.pccredit.kd.dao.TrialLoanApplyDao">
+
+
+<resultMap type="com.cardpay.pccredit.kd.model.TrialLoanApply" id="resultMap">
+	 <result column="ID" property="id" />
+	 <result column="CUSTOMER_NAME" property="customerName" />
+	 <result column="CARD_ID" property="cardId" />
+	 <result column="PHONE_NO" property="phoneNo" />
+	 <result column="APPLY_AMT" property="applyAmt" />
+	 <result column="LOAN_TERM" property="loanTerm" />
+	 <result column="APPLY_TIME" property="applyTime" />
+	 <result column="LOAN_STATE" property="loanState" />
+	 <result column="REMARKS" property="remarks" />
+</resultMap>
+  
+<select id="selectMetionApply" resultMap="resultMap">
+  select ID,CUSTOMER_NAME,CARD_ID,PHONE_NO,APPLY_AMT,LOAN_TERM,LOAN_STATE,REMARKS,
+  date_format(APPLY_TIME,'%Y-%m-%d %H:%i:%S') as APPLY_TIME
+   from customer_loan_apply where 1=1
+  <if test="chineseName != null and chineseName != '' ">
+	 and CUSTOMER_NAME = #{chineseName}
+  </if>
+</select>
+
+
+<update id="doUpdateCustomerApply">
+   UPDATE customer_loan_apply 
+		<set>
+			<if test="state!=null">
+				LOAN_STATE=#{state},
+			</if>
+			<if test="amt!=null">
+				AUDIT_AMT=#{amt},
+			</if>
+		</set>
+		WHERE id=#{id}
+</update>
+
+
+</mapper>
