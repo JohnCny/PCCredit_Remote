@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cardpay.pccredit.customer.web.AmountAdjustmentForm;
 import com.cardpay.pccredit.ipad.util.JsonDateValueProcessor;
+import com.cardpay.pccredit.kd.model.SupplementaryInvestigationData;
 import com.cardpay.pccredit.kd.model.SupplementarySurveyData;
 import com.cardpay.pccredit.kd.model.TrialLoanApply;
 import com.cardpay.pccredit.kd.service.TrialLoanApplyServie;
@@ -69,6 +70,24 @@ public class TrialLoanApplyController {
 		JSONObject json = JSONObject.fromObject(returnMap, jsonConfig);
 		return json.toString();
 	}
+	
+	
+	/**
+	 * 快审审批   补充调查详情页面信息
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/ipad/ks/selectSuppleMentInformation.json", method = { RequestMethod.GET })
+	public String selectSuppleMentInformation(HttpServletRequest request){
+		Map<String, Object> map = new LinkedHashMap<String, Object>();
+		List<SupplementaryInvestigationData>result = trialLoanApplyServie.selectSuppleMentInformation(request);
+		map.put("result", result.get(0));
+		
+		JsonConfig jsonConfig = new JsonConfig();
+		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
+		JSONObject json = JSONObject.fromObject(map, jsonConfig);
+		return json.toString();
+	}
+	
 	
 	@ResponseBody
 	@RequestMapping(value = "/ipad/intopieces/saveBcdc.json")

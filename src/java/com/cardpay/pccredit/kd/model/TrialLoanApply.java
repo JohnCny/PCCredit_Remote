@@ -1,6 +1,5 @@
 package com.cardpay.pccredit.kd.model;
 
-import java.util.Date;
 
 /**
  * 提额申请信息

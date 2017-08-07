@@ -37,7 +37,7 @@ private String UPLOAD_COMPRESS_PATH;
 
 
 
-private Date MARITAL_STATUS;
+private String MARITAL_STATUS;
 private String HIGH_EDU;
 private String DOMICILE;
 
@@ -71,6 +71,34 @@ private BigDecimal TOTAL_ASSETS;
 private BigDecimal TOTAL_LIAB;
 private BigDecimal PAY_PRIVATE_USE;
 private String UPLOAD_FILE_NAME;
+private BigDecimal AUDIT_AMT;
+private Date AUDIT_TIME;
+private String SEX;
+private String AGE;
+public String getAGE() {
+	return AGE;
+}
+public void setAGE(String aGE) {
+	AGE = aGE;
+}
+public String getSEX() {
+	return SEX;
+}
+public void setSEX(String sEX) {
+	SEX = sEX;
+}
+public BigDecimal getAUDIT_AMT() {
+	return AUDIT_AMT;
+}
+public void setAUDIT_AMT(BigDecimal aUDIT_AMT) {
+	AUDIT_AMT = aUDIT_AMT;
+}
+public Date getAUDIT_TIME() {
+	return AUDIT_TIME;
+}
+public void setAUDIT_TIME(Date aUDIT_TIME) {
+	AUDIT_TIME = aUDIT_TIME;
+}
 public String getUPLOAD_FILE_NAME() {
 	return UPLOAD_FILE_NAME;
 }
@@ -168,10 +196,10 @@ public String getUPLOAD_COMPRESS_PATH() {
 public void setUPLOAD_COMPRESS_PATH(String uPLOAD_COMPRESS_PATH) {
 	UPLOAD_COMPRESS_PATH = uPLOAD_COMPRESS_PATH;
 }
-public Date getMARITAL_STATUS() {
+public String getMARITAL_STATUS() {
 	return MARITAL_STATUS;
 }
-public void setMARITAL_STATUS(Date mARITAL_STATUS) {
+public void setMARITAL_STATUS(String mARITAL_STATUS) {
 	MARITAL_STATUS = mARITAL_STATUS;
 }
 public String getHIGH_EDU() {

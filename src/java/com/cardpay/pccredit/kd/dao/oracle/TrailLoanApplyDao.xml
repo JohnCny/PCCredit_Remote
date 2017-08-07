@@ -14,11 +14,49 @@
 	 <result column="LOAN_STATE" property="loanState" />
 	 <result column="REMARKS" property="remarks" />
 </resultMap>
+
+
+<resultMap type="com.cardpay.pccredit.kd.model.SupplementaryInvestigationData" id="smap">
+	<result column="CUSTOMER_NAME" property="customerName" />
+	<result column="CARD_ID" property="cardId" />
+	<result column="PHONE_NO" property="phoneNo" />
+	<result column="APPLY_AMT" property="applyAmt" />
+	<result column="LOAN_TERM" property="loanTerm" />
+
+	<result column="MARITAL_STATUS" property="maritalStatus" />
+	<result column="HIGH_EDU" property="highEdu" />
+	<result column="DOMICILE" property="domicile" />
+	<result column="OWN_HOUSES" property="ownHouses" />
+	<result column="MORTGAGE_HOUSES" property="mortgageHouses" />
+	<result column="MORTGAGE_BALAMT" property="mortgageBalamt" />
+	<result column="OWN_VEHICLES" property="ownVehicles" />
+	<result column="CREDIT_STATUS" property="creditStatus" />
+	<result column="CREDIT_OVERDUE_TIMES" property="creditOverdueTimes" />
+	<result column="LOAN_OVERDUE_TIMES" property="loanOverdueTimes" />
+	<result column="LOAN_BALAMT" property="loanBalamt" />
+	<result column="GUARANTEED" property="guaranteed" />
+	<result column="NUM_OF_ECO_DEPEND" property="numOfEcoDepend" />
+	<result column="ANNUAL_INCOME_SPOUSE" property="annualIncomeSpouse" />
+	<result column="CHILD_EDU" property="childEdu" />
+	<result column="SERVICE_LIFE" property="serviceLife" />
+	<result column="MAIN_BUSINESS_INCOME" property="mainBusinessIncome" />
+	<result column="CURRENT_ASSETS" property="currentAssets" />
+	<result column="FIXED_ASSETS" property="fixedAssets" />
+	<result column="SHORT_TERM_LIAB" property="shortTermLiab" />
+	<result column="OWNED_EQU" property="ownedEqu" />
+	<result column="ANNUAL_DIS_INCOME" property="annualDisIncome" />
+	<result column="OTHER_IMCOME" property="otherImcome" />
+	<result column="STOCK" property="stock" />
+	<result column="TOTAL_ASSETS" property="totalAssets" />
+	<result column="TOTAL_LIAB" property="totalLiab" />
+	<result column="PAY_PRIVATE_USE" property="payPrivateUse" />
+	 
+</resultMap>
   
 <select id="selectMetionApply" resultMap="resultMap">
   select ID,CUSTOMER_NAME,CARD_ID,PHONE_NO,APPLY_AMT,LOAN_TERM,LOAN_STATE,REMARKS,
   date_format(APPLY_TIME,'%Y-%m-%d %H:%i:%S') as APPLY_TIME
-   from customer_loan_apply where 1=1
+   from customer_loan_apply where LOAN_STATE ='2'
   <if test="chineseName != null and chineseName != '' ">
 	 and CUSTOMER_NAME = #{chineseName}
   </if>
@@ -37,6 +75,18 @@
 		</set>
 		WHERE id=#{id}
 </update>
+
+
+
+
+<select id="selectSuppleMentInformation" resultMap="smap">
+	select a.*,b.*
+  from customer_loan_apply a
+  left join supplementary_survey_data b
+    on a.id = b.APPLY_ID
+    WHERE a.id=#{id}
+</select>
+
 
 
 </mapper>

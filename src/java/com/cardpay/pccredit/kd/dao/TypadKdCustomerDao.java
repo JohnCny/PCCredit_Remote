@@ -11,4 +11,10 @@ import com.wicresoft.util.annotation.Mapper;
 public interface TypadKdCustomerDao {
 List<TypadKdCustomer>selectSqCustomer();
 List<TypadKdCustomer> selectImageType(@Param(value = "id") String id);
+void inserIma (TypadKdCustomer t);
+TypadKdCustomer selectImaById(@Param(value = "id") String id);
+TypadKdCustomer selectHistory(@Param(value = "id") String id);
+TypadKdCustomer selectSqCustomerBcl(@Param(value = "id") String id);
+void deleteIma(@Param(value = "id") String id);
+List<TypadKdCustomer>selectImageByType(@Param(value = "id") String id,@Param(value = "REMARKS") String REMARKS);
 }
