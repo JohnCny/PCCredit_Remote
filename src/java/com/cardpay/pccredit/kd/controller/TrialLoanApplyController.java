@@ -12,11 +12,14 @@ import net.sf.json.JsonConfig;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.cardpay.pccredit.customer.web.AmountAdjustmentForm;
 import com.cardpay.pccredit.ipad.util.JsonDateValueProcessor;
+import com.cardpay.pccredit.kd.model.SupplementarySurveyData;
 import com.cardpay.pccredit.kd.model.TrialLoanApply;
 import com.cardpay.pccredit.kd.service.TrialLoanApplyServie;
 import com.wicresoft.jrad.base.auth.JRadOperation;
@@ -61,6 +64,25 @@ public class TrialLoanApplyController {
 				returnMap.put("message","提交失败");
 			}
 		}
+		JsonConfig jsonConfig = new JsonConfig();
+		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
+		JSONObject json = JSONObject.fromObject(returnMap, jsonConfig);
+		return json.toString();
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/ipad/intopieces/saveBcdc.json")
+	public String saveBcdc(@ModelAttribute SupplementarySurveyData supplementarySurveyData,HttpServletRequest request) {
+		JRadReturnMap returnMap = new JRadReturnMap();
+		
+		try {
+			trialLoanApplyServie.saveBcdc(supplementarySurveyData);
+			returnMap.put("message","提交成功");
+		} catch (Exception e) {
+			e.printStackTrace();
+			returnMap.put("message","提交失败");
+		}
+		
 		JsonConfig jsonConfig = new JsonConfig();
 		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
 		JSONObject json = JSONObject.fromObject(returnMap, jsonConfig);
