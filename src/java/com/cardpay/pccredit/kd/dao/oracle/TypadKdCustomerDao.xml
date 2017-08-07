@@ -49,19 +49,45 @@
  <result column="OWN_HOUSES" property="OWN_HOUSES" />
 <result column="MORTGAGE_BALAMT" property="MORTGAGE_BALAMT" />
 <result column="OWN_VEHICLES" property="OWN_VEHICLES" />
+<result column="AUDIT_AMT" property="AUDIT_AMT" />
+<result column="AUDIT_TIME" property="AUDIT_TIME" />
+<result column="SEX" property="SEX" />
+<result column="AGE" property="AGE" />
   </resultMap>
 
 
 <select id="selectSqCustomer" resultMap="TypadKdCustomer">
-select b.ID,b.CUSTOMER_NAME,b.CARD_ID,b.PHONE_NO,b.APPLY_AMT,b.LOAN_TERM,b.APPLY_TIME,b.LOAN_STATE,b.REMARKS,
+select distinct  b.ID,b.CUSTOMER_NAME,b.CARD_ID,b.PHONE_NO,b.APPLY_AMT,b.LOAN_TERM,b.APPLY_TIME,b.LOAN_STATE,b.REMARKS,
 L.APPLY_ID as APPLY_ID ,s.APPLY_ID as APPLY_ID1
  from customer_loan_apply b left join loan_data_upload l on l.apply_id=b.id
 left join supplementary_survey_data s on s.apply_id=b.id
+where LOAN_STATE in('0','1')
 </select>
 
+<select id="selectSqCustomerBcl" resultMap="TypadKdCustomer">
+select * from customer_loan_apply b , supplementary_survey_data s where s.apply_id=b.id
+and b.id=#{id}
+</select> 
 
 
+<select id="selectImaById" resultMap="TypadKdCustomer">
+select * from loan_data_upload where id=#{id} 
+</select>
 <select id="selectImageType" resultMap="TypadKdCustomer">
-select * from loan_data_upload where apply_id=#{id} ORDER BY  upload_file_name 
+select * from loan_data_upload where apply_id=#{id} ORDER BY  REMARKS 
 </select>
+<select id="selectImageByType" resultMap="TypadKdCustomer">
+select * from loan_data_upload where apply_id=#{id}  and  REMARKS =#{REMARKS}
+</select>
+<insert id="inserIma">
+    insert into loan_data_upload (APPLY_ID,UPLOAD_FILE_NAME,UPLOAD_TIME,UPLOAD_PATH,UPLOAD_COMPRESS_PATH,REMARKS,ID)
+    values(#{APPLY_ID},#{UPLOAD_FILE_NAME},#{UPLOAD_TIME},#{UPLOAD_PATH},#{UPLOAD_COMPRESS_PATH},#{REMARKS},#{ID})
+</insert>
+
+<select id="selectHistory" resultMap="TypadKdCustomer">
+    select * from customer_loan_apply where id=#{id} 
+</select>
+<delete id="deleteIma">
+    delete from loan_data_upload where id = #{id}
+</delete>
 </mapper>

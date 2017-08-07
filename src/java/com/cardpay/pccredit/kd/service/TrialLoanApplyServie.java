@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import com.cardpay.pccredit.kd.constant.Constant;
 import com.cardpay.pccredit.kd.dao.TrialLoanApplyDao;
+import com.cardpay.pccredit.kd.model.SupplementaryInvestigationData;
 import com.cardpay.pccredit.kd.model.SupplementarySurveyData;
 import com.cardpay.pccredit.kd.model.TrialLoanApply;
 import com.wicresoft.jrad.base.database.dao.common.CommonDao;
@@ -44,6 +45,11 @@ public class TrialLoanApplyServie {
 		}else if("SUPINVEST".equals(auditresult)){//补充调查
 			trialLoanApplyDao.doUpdateCustomerApply(id,Constant.LOAN_STATE_1,"");
 		}
+	}
+	
+	public List<SupplementaryInvestigationData> selectSuppleMentInformation(HttpServletRequest request){
+		String id = request.getParameter("appId");
+		return trialLoanApplyDao.selectSuppleMentInformation(id);
 	}
 
 	public void saveBcdc(SupplementarySurveyData supplementarySurveyData) {
