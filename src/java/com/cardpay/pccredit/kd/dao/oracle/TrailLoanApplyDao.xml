@@ -16,6 +16,11 @@
 </resultMap>
 
 
+<resultMap type="com.cardpay.pccredit.kd.model.LoanUploadData" id="umap">
+	 <result column="ID" property="id" />
+	 <result column="UPLOAD_PATH" property="uploadPath" />
+</resultMap>
+
 <resultMap type="com.cardpay.pccredit.kd.model.SupplementaryInvestigationData" id="smap">
 	<result column="CUSTOMER_NAME" property="customerName" />
 	<result column="CARD_ID" property="cardId" />
@@ -72,6 +77,7 @@
 			<if test="amt!=null and amt != ''">
 				AUDIT_AMT=#{amt},
 			</if>
+				AUDIT_TIME= sysdate() 
 		</set>
 		WHERE id=#{id}
 </update>
@@ -85,8 +91,14 @@
   left join supplementary_survey_data b
     on a.id = b.APPLY_ID
     WHERE a.id=#{id}
+    order by b.invest_time  desc
 </select>
 
+
+<select id="selectLoanUploadDataList" resultMap="umap">
+   select * from loan_data_upload
+    WHERE apply_id=#{appId} and remarks = #{type}
+</select>
 
 
 </mapper>

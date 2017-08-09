@@ -661,4 +661,55 @@
 	   <item name="signcount"  	title="签约数"/>
 	   <item name="givemoneycount"  	title="放款数"/>
 	</dictionary>  
+	
+	
+	<dictionary name="MARITAL_STATUS" title="婚姻状况">
+	   <item name="0"  			title="未婚"/>
+	   <item name="1"  			title="已婚"/>
+	   <item name="2"  			title="离婚"/>
+	   <item name="3"  			title="再婚"/>
+	</dictionary>  
+	
+	
+	<dictionary name="HIGH_EDU" title="最高学位学历">
+	   <item name="0"  			title="初中及以下"/>
+	   <item name="1"  			title="高中或技校"/>
+	   <item name="2"  			title="大学或以上"/>
+	</dictionary>  
+	
+	
+	<dictionary name="DOMICILE" title="户籍所在地">
+	   <item name="0"  			title="本省"/>
+	   <item name="1"  			title="本省外地"/>
+	   <item name="2"  			title="外地"/>
+	</dictionary>  
+	
+	<dictionary name="CREDIT_STATUS" title="信用状况">
+	   <item name="0"  			title="正常"/>
+	   <item name="1"  			title="不正常"/>
+	   <item name="2"  			title="无记录"/>
+	</dictionary>  
+	
+	<dictionary name="CHILD_EDU" title="子女教育情况">
+	   <item name="0"  			title="无子女"/>
+	   <item name="1"  			title="上学"/>
+	   <item name="2"  			title="学龄前"/>
+	   <item name="3"  			title="工作"/>
+	</dictionary>  
+	
+	
+	<dictionary name="KD_STATUS" title="审批状态">
+	   <item name="APPROVE"  			title="通过"/>
+	   <item name="REJECT"  			title="拒绝"/>
+	   <item name="SUPINVEST"  			title="补充调查"/>
+	</dictionary>  
+	
+	提额申请状态0-待调查 1-补充调查 2-快审中 3-通过4-拒绝
+	<dictionary name="LOAN_STATE" title="状态">
+	   <item name="0"  			title="待调查"/>
+	   <item name="1"  			title="补充调查"/>
+	   <item name="2"  			title="快审中"/>
+	   <item name="3"  			title="通过"/>
+	   <item name="4"  			title="拒绝"/>
+	</dictionary>  
 </dictionaries>
