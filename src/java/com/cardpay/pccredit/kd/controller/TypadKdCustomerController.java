@@ -44,7 +44,7 @@ public class TypadKdCustomerController {
 	@RequestMapping(value = "/ipad/Customer/selectSqCustomer.json", method = { RequestMethod.GET })
 	public String selectSqCustomer(HttpServletRequest request){
 		Map<String, Object> map = new LinkedHashMap<String, Object>();
-		List<TypadKdCustomer>result=CustomerServi.selectSqCustomer();
+		List<TypadKdCustomer>result=CustomerServi.selectSqCustomer(request);
 		map.put("result", result);
 		map.put("size",result.size());
 		JsonConfig jsonConfig = new JsonConfig();
@@ -76,7 +76,7 @@ public class TypadKdCustomerController {
 		}else if(result.get(i).getREMARKS().equals("社保缴纳证明")){
 			
 			Image3.add(Image3.size(), result.get(i));
-	}else if(result.get(i).getREMARKS().equals("缴税证明")){
+	}else if(result.get(i).getREMARKS().equals("纳税证明")){
 		
 		Image4.add(Image4.size(), result.get(i));
 }

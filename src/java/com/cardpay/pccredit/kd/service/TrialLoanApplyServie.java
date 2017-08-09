@@ -54,7 +54,9 @@ public class TrialLoanApplyServie {
 
 	public void saveBcdc(SupplementarySurveyData supplementarySurveyData) {
 		commonDao.insertObject(supplementarySurveyData);
-		String sql = "update customer_loan_apply set LOAN_STATE='1' where id='"+supplementarySurveyData.getApplyId()+"'";
-		commonDao.queryBySql(sql, null);
+		//String sql = "update customer_loan_apply set LOAN_STATE='2' where id='"+supplementarySurveyData.getApplyId()+"'";
+		//commonDao.queryBySql(sql, null);
+		// 数据模型评估TODO
+		trialLoanApplyDao.doUpdateCustomerApply(supplementarySurveyData.getApplyId(),Constant.LOAN_STATE_2,"");
 	}
 }

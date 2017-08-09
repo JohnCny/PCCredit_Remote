@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.imageio.ImageIO;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.ibatis.annotations.Param;
@@ -35,8 +36,9 @@ import com.wicresoft.jrad.base.database.id.IDGenerator;
 public class TypadKdCustomerServie {
 	@Autowired
 	private TypadKdCustomerDao commonDao;
-	public List<TypadKdCustomer>selectSqCustomer(){
-		return commonDao.selectSqCustomer();
+	public List<TypadKdCustomer>selectSqCustomer(HttpServletRequest request){
+		String chineseName = request.getParameter("chineseName");
+		return commonDao.selectSqCustomer(chineseName);
 		
 	}
 	public List<TypadKdCustomer> selectImageType( String id){

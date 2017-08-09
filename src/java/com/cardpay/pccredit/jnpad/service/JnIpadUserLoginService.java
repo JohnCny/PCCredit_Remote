@@ -115,7 +115,7 @@ public class JnIpadUserLoginService {
 	public String findLastLogin(String loginId) {
 		
 		//String sql ="SELECT action_time FROM ( SELECT rownum rm,action_time FROM ( SELECT s.* FROM SYS_LOGIN_LOG s  INNER JOIN SYS_USER u ON s.login = u.LOGIN WHERE u.ID = '"+loginId+"' and s.action='SignIn' ORDER BY s.action_time DESC) )WHERE rm=2";
-		String sql ="SELECT ACTION_TIME FROM  SYS_LOGIN_LOG s  INNER JOIN SYS_USER u ON s.login = u.LOGIN WHERE u.ID = '"+loginId+"' and s.action='SignIn' ORDER BY s.action_time DESC";
+		String sql ="SELECT date_format(ACTION_TIME,'%Y-%m-%d %H:%i:%S') as ACTION_TIME FROM  SYS_LOGIN_LOG s  INNER JOIN SYS_USER u ON s.login = u.LOGIN WHERE u.ID = '"+loginId+"' and s.action='SignIn' ORDER BY s.action_time DESC";
 		Map<String, Object> params = new LinkedHashMap<String, Object>();
 		String time="";
 		List<HashMap<String, Object>> LastLogin = commonDao.queryBySql(sql, null);

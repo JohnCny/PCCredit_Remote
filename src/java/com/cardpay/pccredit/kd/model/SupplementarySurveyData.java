@@ -12,34 +12,36 @@ public class SupplementarySurveyData extends BusinessModel{
 	private static final long serialVersionUID = 1L;
 	
 	private String applyId;
-	private String maritalStatus;
-	private String highEdu;
-	private String domicile;
-	private String ownHouses;
-	private String mortgageHouses;
-	private String mortgageBalamt;
-	private String ownVehicles;
-	private String creditStatus;
-	private String creditOverdueTimes;
-	private String loanOverdueTimes;
-	private String loanBalamt;
-	private String guaranteed;
-	private String numOfEcoDepend;
-	private String annualIncomeSpouse;
-	private String childEdu;
-	private String serviceLife;
-	private String mainBusinessIncome;
-	private String currentAssets;
-	private String fixedAssets;
-	private String shortTermLiab;
-	private String ownedEqu;
-	private String annualDisIncome;
-	private String otherImcome;
-	private String stock;
-	private String totalAssets;
-	private String totalLiab;
-	private String payPrivateUse;
-	private String remarks;
+	private String maritalStatus; // 个人信息-婚姻状况(0-未婚 1-已婚 2-离婚 3-再婚)',
+	private String highEdu; // 个人信息-最高学位学历(0-初中及以下 1-高中或技校 2-大学或以上)',
+	private String domicile; // 个人信息-户籍所在地(0-本省 1-本省外地 2-外地)',
+	private String ownHouses; // '家庭资产-自有房产数量',
+	private String mortgageHouses; // '家庭资产-按揭房产数量',
+	private String mortgageBalamt; // '家庭资产-按揭贷款余额',
+	private String ownVehicles; // '家庭资产-自有车辆数量',
+	private String creditStatus; // '征信状况-信用状况(0-正常 1-不正常 2-无记录)',
+	private String creditOverdueTimes; // '征信状况-信用逾期次数',
+	private String loanOverdueTimes; // '征信状况-贷款逾期次数',
+	private String loanBalamt; // '征信状况-贷款余额',
+	private String guaranteed; // '征信状况-担保余额',
+	private String numOfEcoDepend; // '家庭状况-经济上依赖的人数',
+	private String annualIncomeSpouse; // '家庭状况-配偶年收入',
+	private String childEdu; // '家庭状况-子女教育情况(0-无子女 1-上学 2-学龄前 3-工作)',
+	private String serviceLife; // '经营及财务状况-业务年限',
+	private String mainBusinessIncome; // '经营及财务状况-主营业务收入',
+	private String currentAssets; // '经营及财务状况-流动资产',
+	private String fixedAssets; // '经营及财务状况-固定资产',
+	private String shortTermLiab; // '经营及财务状况-短期负债',
+	private String ownedEqu; // '经营及财务状况-所有者权益',
+	private String annualDisIncome; // '经营及财务状况-年可支配收入',
+	private String otherImcome; // '经营及财务状况-其他工作收入',
+	private String stock; // '经营及财务状况-存货',
+	private String totalAssets; // '经营及财务状况-资产总计',
+	private String totalLiab; // '经营及财务状况-负债总计',
+	private String payPrivateUse; // '经营及财务状况-私人用途分期付款',
+	private String remarks; // '备注'                                             
+	                                                                
+	
 	
 	public String getApplyId() {
 		return applyId;

@@ -62,6 +62,9 @@ L.APPLY_ID as APPLY_ID ,s.APPLY_ID as APPLY_ID1
  from customer_loan_apply b left join loan_data_upload l on l.apply_id=b.id
 left join supplementary_survey_data s on s.apply_id=b.id
 where LOAN_STATE in('0','1')
+<if test="chineseName != null and chineseName != '' ">
+	 and b.CUSTOMER_NAME = #{chineseName}
+  </if>
 </select>
 
 <select id="selectSqCustomerBcl" resultMap="TypadKdCustomer">
