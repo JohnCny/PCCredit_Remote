@@ -66,10 +66,10 @@
 <update id="doUpdateCustomerApply">
    UPDATE customer_loan_apply 
 		<set>
-			<if test="state!=null">
+			<if test="state!=null and state != '' ">
 				LOAN_STATE=#{state},
 			</if>
-			<if test="amt!=null">
+			<if test="amt!=null and amt != ''">
 				AUDIT_AMT=#{amt},
 			</if>
 		</set>
