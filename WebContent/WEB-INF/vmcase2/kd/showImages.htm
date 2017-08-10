@@ -27,33 +27,32 @@
 	</div> -->
 
 	<div id="jycs"
-		style="margin-left: 170px; margin-right: 0px; display: inline-block;">
-		<li onclick="viewInto('$!appId','身份证')"><img src="${contextPath}/images/wenjian.png" /></li></br>
+		style="margin-left: 70px; margin-right: 0px; display: inline-block;">
+		<li onclick="viewInto('$!appId','身份证')" style="list-style:none"><img src="${contextPath}/images/wenjian.png" style="width:80px"/></li></br>
 		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span>身份证(<font
 			color="#FF0000">$!Image1size张</font> )
 		</span>
 	</div>
 
 	<div id="jyqs"
-		style="margin-left: 170px; margin-right: 0px; display: inline-block;">
-		<li onclick="viewInto('$!appId','银行流水')"><img src="${contextPath}/images/wenjian.png" /></li></br>
+		style="margin-left: 70px; margin-right: 0px; display: inline-block;">
+		<li onclick="viewInto('$!appId','银行流水')" style="list-style:none"><img src="${contextPath}/images/wenjian.png" style="width:80px" /></li></br>
 		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span>银行流水(<font
 			color="#FF0000">$!Image2size张</font> )
 		</span>
 	</div>
 
 	<div id="ljjc"
-		style="margin-left: 170px; margin-right: 0px; display: inline-block;">
-		<li onclick="viewInto('$!appId','社保缴纳证明')"><img src="${contextPath}/images/wenjian.png" /></li></br>
+		style="margin-left: 70px; margin-right: 0px; display: inline-block;">
+		<li onclick="viewInto('$!appId','社保缴纳证明')" style="list-style:none"><img src="${contextPath}/images/wenjian.png" style="width:80px" /></li></br>
 		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span>社保缴纳证明(<font
 			color="#FF0000">$!Image3size张</font> )
 		</span>
 	</div>
 
-
 	<div id="zcfz"
-		style="margin-left: 170px; margin-right: 0px; display: inline-block;">
-		<li onclick="viewInto('$!appId','纳税证明')"><img src="${contextPath}/images/wenjian.png" /></li></br>
+		style="margin-left: 70px; margin-right: 0px; display: inline-block;">
+		<li onclick="viewInto('$!appId','纳税证明')" style="list-style:none"><img src="${contextPath}/images/wenjian.png"  style="width:80px"/></li></br>
 		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span>纳税证明(<font
 			color="#FF0000">$!Image4size张</font> )
 		</span>
@@ -109,7 +108,7 @@
 	
  </body>
  <script type="text/javascript">
-	    (function() {//获取图片原始尺寸
+	    /* (function() {//获取图片原始尺寸
 	    	// 读取尺寸大小
 	    	var imgReady = (function () {
 	    		var list = [], intervalId = null,
@@ -176,7 +175,7 @@
 					$(self).wrap('<div class="gallery"><a href="'+$(self).attr("src")+'" data-size="'+this.width+"x"+this.height+'" data-med="'+$(self).attr("src")+'" data-med-size="'+this.width+"x"+this.height+'"></div>');
 				});
 			});
-		});
+		}); */
 	    
 	    /*查看图片*/
 		function viewInto(appId,type){
