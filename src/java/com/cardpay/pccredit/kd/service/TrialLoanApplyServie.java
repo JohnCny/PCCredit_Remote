@@ -1,5 +1,6 @@
 package com.cardpay.pccredit.kd.service;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -8,6 +9,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 
 
 
@@ -53,6 +55,7 @@ public class TrialLoanApplyServie {
 	}
 
 	public void saveBcdc(SupplementarySurveyData supplementarySurveyData) {
+		supplementarySurveyData.setInvestTime(new Date());
 		commonDao.insertObject(supplementarySurveyData);
 		//String sql = "update customer_loan_apply set LOAN_STATE='2' where id='"+supplementarySurveyData.getApplyId()+"'";
 		//commonDao.queryBySql(sql, null);

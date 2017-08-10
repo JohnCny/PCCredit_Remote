@@ -1,0 +1,162 @@
+#parse ("common/iframe_page_header.htm")
+#parse ("common/macro.htm")
+  <link rel="stylesheet" type="text/css" href="${uicasePath}/css/specialtab.css" />
+<body class="whitebg">
+  <div class="content_main">
+    <div class="contentinner">
+      <div class="place">
+        <div class="title">快审审贷</div>
+      </div>
+       
+      <form id="id_module_form" action="${contextPath}/ipad/ks/updateAll.json"/>
+      <input type="hidden" name="appId" id="appId" value="$!appId" />
+      <div class="form-bd" id="formsId" style="margin-top: 0px;padding-top: 0px;"></div>
+      <div class="form-bd" id="formsId" style="margin-top: 0px;padding-top: 0px;">
+          <table cellpadding="0" cellspacing="0" class="table-bd" border="1" bordercolor="#cccccc" style="width: 100%;">
+            <colgroup>
+              <col width="10%" />
+              <col width="30%" />
+              <col width="10%" />
+              <col width="30%" />
+            </colgroup>
+              <tr><td class="titlec" colspan="4" style="text-align: center;">模型评估结果</td></tr>
+              
+              <tr>
+              <td class="titlefc3"><label for="assessResult">评估结果：</label></td>
+	          <td><input  type="text" class="rinpsty" name="" id="" value="通过" disabled="disabled"/></td>
+	          <td class="titlefc3"><span></span><label for="assessAmt" >评估金额(元):</label></td>
+	          <td><input  type="text" class="rinpsty" name="" id="" value="200000" readonly="readonly"/></td>
+              </tr>
+              
+              <tr>
+              <td class="titlefc3"><span></span><label for="refuseReason" >拒绝原因:</label></td>
+	          <td><input  type="text" class="rinpsty" name="refuseReason" id="refuseReason" value="" disabled="disabled"/></td>
+              </tr>
+              
+          </table>
+         </div>
+      	
+        <div class="form-bd" id="formsId" style="margin-top: 0px;padding-top: 0px;">
+          <table cellpadding="0" cellspacing="0" class="table-bd" border="1" bordercolor="#cccccc" style="width: 100%;">
+            <colgroup>
+              <col width="10%" />
+              <col width="30%" />
+              <col width="10%" />
+              <col width="30%" />
+            </colgroup>
+              <tr><td class="titlec" colspan="4" style="text-align: center;">客户贷款申请信息</td></tr>
+            <tr>
+			  <td class="titlefc3"><label for="">客户名称:</label></td>
+              <td><input  type="text" class="rinpsty" name="" id="" value="$!applylist.customerName" disabled="disabled"/></td>
+              <td class="titlefc3"><label for="">身份证号码:</label></td>
+              <td><input type="text" class="rinpsty" name="" id="" value="$!applylist.cardId" disabled="disabled"/></td>
+            </tr>
+            <tr>
+			  <td class="titlefc3"><label for="">手机号:</label></td>
+              <td><input type="text" class="rinpsty" name="" id="" value="$!applylist.phoneNo" disabled="disabled"/></td>
+              <td class="titlefc3"><label for="">申请金额(元)：</label></td>
+              <td><input type="text" class="rinpsty" name="" id="" value="$!applylist.applyAmt" disabled="disabled"/></td>
+            </tr>
+            <tr>
+			  <td class="titlefc3"><label for="">申请期限:</label></td>
+              <td><input  type="text" class="rinpsty" name="" id="" value="$!applylist.loanTerm" disabled="disabled"/></td>
+              <td class="titlefc3"><label for="">申请时间:</label></td>
+              <td><input  type="text" class="rinpsty" name="" id="" value="$!applylist.applyTime" disabled="disabled"/></td>
+            </tr>
+          </table>
+         </div>
+         
+         <div class="form-bd" id="formsId" style="margin-top: 0px;padding-top: 0px;">
+          <table cellpadding="0" cellspacing="0" class="table-bd" border="1" bordercolor="#cccccc" style="width: 100%;">
+            <colgroup>
+              <col width="10%" />
+              <col width="30%" />
+              <col width="10%" />
+              <col width="30%" />
+            </colgroup>
+              <tr><td class="titlec" colspan="4" style="text-align: center;">审批决议</td></tr>
+            <tr>
+              <td  class="titlefc3"><label for="status">审批结论:</label></td>
+              <td><select id="status" name="status" onChange="changeDecisionRefusereason();">
+                  	#dict("KD_STATUS","")
+                  </select>
+              </td>
+              <td  class="titlefc3"><label for="amt">提额金额:</label></td>
+              <td><input  type="text" class="rinpsty" name="amt" id="amt" value=""/></td>
+            </tr>
+          </table>
+        </div>
+      </form>
+      <div class="submit">
+        <input id="id_save_button" type="button" value="#i18n('button.save')" class="current" />
+        <input type="button" onclick="javascript:history.go(-1);" value="返回" />
+      </div>
+    </div>
+  </div>
+  
+
+<script src='${contextPath}/js/maintenanceAccountManager/maintenanceAccountManager.js'></script> 
+<script type="text/javascript">
+  	#set ($formName = "'#id_module_form'")
+	var layout = new FormsLayout("formsId");
+	window.top.currentWindow.setLayout(layout);
+	
+	
+	$(document).ready(function() {		
+		var info = "$!customerApplicationInfo.status";
+		
+		// 保存
+		$("#id_save_button").click(function() {
+			$(".myerror").remove();
+			var status = $("select[name=status]").val();
+			
+			if( status == "APPROVE"){
+				if($("#amt").val() == ""){
+					 $("#amt").after("<label class='error myerror' generated='true' >金额不能为空</label>");  
+					 return;
+				}
+			}
+			
+			var leng = 0;
+	    	leng = $(".myerror").length;
+	    	if(leng > 0){
+	    		return;
+	    	}else{
+	    		if ($($formName).valid()) {
+					var formjson = $($formName).serialize();
+					
+		 	          $.get($($formName).attr("action"), formjson, function(data, textStatus, jqXhr) {
+		 	            if (data.success) {
+		 	            	topWin.Dialog.message("保存成功!");
+		 	            	window.location.href="${contextPath}/ipad/ks/browse.page";
+		 	            }
+		 	          });
+				}
+	    	}
+		});
+		
+		
+	    // change
+		$("#status").change(function (){
+			$(".myerror").remove();
+			var status = $("select[name=status]").val();
+			if(status == "APPROVE"){
+				$('#amt').removeAttr('disabled')
+			}
+			
+			if(status == "REJECT"){
+				$("#amt").attr('disabled',"true");
+			}
+			
+			if(status == "SUPINVEST"){
+				$("#amt").attr('disabled',"true");
+			}
+		});
+		
+	});
+	
+	
+  </script>
+  
+</body>
+#parse ("common/iframe_page_footer.htm")

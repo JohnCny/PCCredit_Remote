@@ -1,0 +1,44 @@
+
+<link rel="stylesheet" type="text/css" href="${uicasePath}/css/jcarousel.connected-carousels.css" />
+<script src='${contextPath}/common/js/common/jquery.min.js'></script>
+<script type="text/javascript" src='${contextPath}/common/js/common/jquery.js'></script>
+<script type="text/javascript" src="${contextPath}/common/js/common/jquery.jcarousel.min.js"></script>
+<script type="text/javascript" src="${contextPath}/common/js/common/jcarousel.connected-carousels.js"></script>
+
+
+
+<body style="background:#F0EFE7;">
+	<div class="wrapper">
+      <div class="connected-carousels">
+          <div class="stage">
+              <div class="carousel carousel-stage">
+                  <ul>
+                      #foreach($qz in $!QzApplnAttachmentDetail)
+      		 			<li><img src="${contextPath}/ipad/TypadImageBrowse/downLoadYxzlJn.json?id=$!qz.id" width="800" height="550" alt=""></li>
+      	 			  #end
+                  </ul>
+              </div>
+              <a href="#" class="prev prev-stage"><span>&lsaquo;</span></a>
+              <a href="#" class="next next-stage"><span>&rsaquo;</span></a>
+          </div>
+
+          <div class="navigation" >
+              <a href="#" class="prev prev-navigation">&lsaquo;</a>
+              <a href="#" class="next next-navigation">&rsaquo;</a>
+              <div class="carousel carousel-navigation">
+                  <ul>
+                      #foreach($qz in $!QzApplnAttachmentDetail)
+      		 			<li><img src="${contextPath}/ipad/TypadImageBrowse/downLoadYxzlJn.json?id=$!qz.id" width="50" height="50" alt=""></li>
+      	 			  #end
+                  </ul>
+              </div>
+          </div>
+      </div>
+  </div>
+  <script type="text/javascript">
+  	$(document).ready(function(){
+  		$("#table_diaog").css("height","auto");
+  		$(".ui-dialog").css("top","10px");
+  	})
+  </script>
+</body>

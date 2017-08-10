@@ -1,10 +1,12 @@
 package com.cardpay.pccredit.kd.model;
 
+import com.wicresoft.jrad.base.web.filter.BaseQueryFilter;
+
 
 /**
  * 提额申请信息
  */
-public class TrialLoanApply {
+public class TrialLoanApply  extends BaseQueryFilter{
 	  private String id;
 	  private String customerName;
 	  private String cardId;
@@ -17,9 +19,15 @@ public class TrialLoanApply {
 	  
 	  private String AuditAmt;//审批通过金额
 	  private String AuditTime;//审批时间
-	  
+	  private String chineseName;
 	  
 	
+	public String getChineseName() {
+		return chineseName;
+	}
+	public void setChineseName(String chineseName) {
+		this.chineseName = chineseName;
+	}
 	public String getAuditAmt() {
 		return AuditAmt;
 	}

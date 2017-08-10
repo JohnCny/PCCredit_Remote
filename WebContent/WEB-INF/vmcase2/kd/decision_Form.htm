@@ -1,0 +1,251 @@
+#parse ("common/iframe_page_header.htm")
+#parse ("common/macro.htm")
+  <link rel="stylesheet" type="text/css" href="${uicasePath}/css/specialtab.css" />
+<body class="whitebg">
+  <div class="content_main">
+    <div class="contentinner">
+      <div class="place">
+        <div class="title">补充调查详情</div>
+      </div>
+       
+      <form id="id_module_form"/>
+      <div class="form-bd" id="formsId" style="margin-top: 0px;padding-top: 0px;"></div>
+         <div class="form-bd" id="formsId" style="margin-top: 0px;padding-top: 0px;">
+          <table cellpadding="0" cellspacing="0" class="table-bd" border="1" bordercolor="#cccccc" style="width: 100%;">
+            <colgroup>
+              <col width="10%" />
+              <col width="30%" />
+              <col width="10%" />
+              <col width="30%" />
+            </colgroup>
+              <tr><td class="titlec" colspan="4" style="text-align: center;">贷款基本信息</td></tr>
+              
+              <tr>
+	              <td class="titlefc3"><label for="">申请人姓名:</label></td>
+		          <td><input  type="text" class="rinpsty" name="" id="" value="$!supinvestdata.customerName"     readonly="readonly" /></td>
+		          <td class="titlefc3"><label for="">申请额度(元):</label></td>
+		          <td><input  type="text" class="rinpsty" name="" id="" value="$!supinvestdata.applyAmt"     readonly="readonly"  /></td>
+              </tr>
+              
+              <tr>
+	              <td class="titlefc3"><label for="">贷款期限:</label></td>
+		          <td><input  type="text" class="rinpsty" name="" id="" value="$!supinvestdata.loanTerm"     readonly="readonly" /></td>
+		          <td class="titlefc3"><label for="">还款方式:</label></td>
+		          <td><input  type="text" class="rinpsty" name="" id="" value=""     readonly="readonly"  /></td>
+              </tr>
+          </table>
+         </div>
+         
+        <div class="form-bd" id="formsId" style="margin-top: 0px;padding-top: 0px;">
+          <table cellpadding="0" cellspacing="0" class="table-bd" border="1" bordercolor="#cccccc" style="width: 100%;">
+            <colgroup>
+              <col width="10%" />
+              <col width="30%" />
+              <col width="10%" />
+              <col width="30%" />
+            </colgroup>
+               <tr><td class="titlec" colspan="4" style="text-align: center;">个人信息</td></tr>
+              
+              <tr>
+	              <td class="titlefc3"><label for="">性别:</label></td>
+		          <td><input  type="text" class="rinpsty" name="" id="" value=""     readonly="readonly" /></td>
+		          <td class="titlefc3"><label for="">身份证号码:</label></td>
+		          <td><input  type="text" class="rinpsty" name="" id="" value="$!supinvestdata.cardId"     readonly="readonly"  /></td>
+              </tr>
+              
+              <tr>
+	              <td class="titlefc3"><label for="">年龄:</label></td>
+		          <td><input  type="text" class="rinpsty" name="" id="" value=""     readonly="readonly" /></td>
+		          <td class="titlefc3"><label for="">手机号:</label></td>
+		          <td><input  type="text" class="rinpsty" name="" id="" value="$!supinvestdata.phoneNo"     readonly="readonly"  /></td>
+              </tr>
+              
+              <tr>
+	              <td class="titlefc3"><label for="">婚姻状况:</label></td>
+		          <td><select  name="" id="" style="width: 150px;" disabled="disabled">
+                  	#dict("MARITAL_STATUS",$!supinvestdata.maritalStatus)
+                  </select></td>
+		          <td class="titlefc3"><label for="">最高学历:</label></td>
+              	  <td><select  name="" id="" style="width: 150px;" disabled="disabled">
+                  	#dict("HIGH_EDU",$!supinvestdata.highEdu)
+                  </select></td>
+              </tr>
+              
+              <tr>
+	              <td class="titlefc3"><label for="">户籍所在地:</label></td>
+		          <td><select  name="" id="" style="width: 150px;" disabled="disabled">
+                  	#dict("DOMICILE",$!supinvestdata.domicile)
+                  </select></td>
+              </tr>
+          </table>
+         </div>
+         
+         <div class="form-bd" id="formsId" style="margin-top: 0px;padding-top: 0px;">
+          <table cellpadding="0" cellspacing="0" class="table-bd" border="1" bordercolor="#cccccc" style="width: 100%;">
+            <colgroup>
+              <col width="10%" />
+              <col width="30%" />
+              <col width="10%" />
+              <col width="30%" />
+            </colgroup>
+              <tr><td class="titlec" colspan="4" style="text-align: center;">家庭资产</td></tr>
+              
+              <tr>
+	              <td class="titlefc3"><label for="">自有房产数量:</label></td>
+		          <td><input  type="text" class="rinpsty" name="" id="" value="$!supinvestdata.ownHouses"     readonly="readonly" /></td>
+		          <td class="titlefc3"><label for="">按揭房产数量:</label></td>
+		          <td><input  type="text" class="rinpsty" name="" id="" value="$!supinvestdata.mortgageHouses"     readonly="readonly"  /></td>
+              </tr>
+              
+              <tr>
+	              <td class="titlefc3"><label for="">按揭贷款余额:</label></td>
+		          <td><input  type="text" class="rinpsty" name="" id="" value="$!supinvestdata.mortgageBalamt"     readonly="readonly" /></td>
+		          <td class="titlefc3"><label for="">自有车辆数量:</label></td>
+		          <td><input  type="text" class="rinpsty" name="" id="" value="$!supinvestdata.ownVehicles"     readonly="readonly"  /></td>
+              </tr>
+              
+          </table>
+         </div>
+         
+         <div class="form-bd" id="formsId" style="margin-top: 0px;padding-top: 0px;">
+          <table cellpadding="0" cellspacing="0" class="table-bd" border="1" bordercolor="#cccccc" style="width: 100%;">
+            <colgroup>
+              <col width="10%" />
+              <col width="30%" />
+              <col width="10%" />
+              <col width="30%" />
+            </colgroup>
+              <tr><td class="titlec" colspan="4" style="text-align: center;">征信状况</td></tr>
+              
+              <tr>
+	              <td class="titlefc3"><label for="">信用状况:</label></td>
+		           <td><select  name="" id="" style="width: 150px;" disabled="disabled">
+                  	#dict("CREDIT_STATUS",$!supinvestdata.creditStatus)
+                  </select></td>
+		          <td class="titlefc3"><label for="">信用逾期次数:</label></td>
+		          <td><input  type="text" class="rinpsty" name="" id="" value="$!supinvestdata.creditOverdueTimes"     readonly="readonly"  /></td>
+              </tr>
+              
+              <tr>
+	              <td class="titlefc3"><label for="">贷款逾期次数:</label></td>
+		          <td><input  type="text" class="rinpsty" name="" id="" value="$!supinvestdata.loanOverdueTimes"     readonly="readonly" /></td>
+		          <td class="titlefc3"><label for="">贷款余额(元):</label></td>
+		          <td><input  type="text" class="rinpsty" name="" id="" value="$!supinvestdata.loanBalamt"     readonly="readonly"  /></td>
+              </tr>
+              
+              <tr>
+	              <td class="titlefc3"><label for="">担保余额(元):</label></td>
+		          <td><input  type="text" class="rinpsty" name="" id="" value="$!supinvestdata.guaranteed"     readonly="readonly" /></td>
+              </tr>
+              
+          </table>
+         </div>
+         
+         
+         <div class="form-bd" id="formsId" style="margin-top: 0px;padding-top: 0px;">
+          <table cellpadding="0" cellspacing="0" class="table-bd" border="1" bordercolor="#cccccc" style="width: 100%;">
+            <colgroup>
+              <col width="10%" />
+              <col width="30%" />
+              <col width="10%" />
+              <col width="30%" />
+            </colgroup>
+              <tr><td class="titlec" colspan="4" style="text-align: center;">家庭状况</td></tr>
+              
+              <tr>
+	              <td class="titlefc3"><label for="">经济上依赖的人数:</label></td>
+		          <td><input  type="text" class="rinpsty" name="" id="" value="$!supinvestdata.numOfEcoDepend"     readonly="readonly" /></td>
+		          <td class="titlefc3"><label for="">配偶年收入(元):</label></td>
+		          <td><input  type="text" class="rinpsty" name="" id="" value="$!supinvestdata.annualIncomeSpouse"     readonly="readonly"  /></td>
+              </tr>
+              
+              <tr>
+	              <td class="titlefc3"><label for="">子女教育情况:</label></td>
+		           <td><select  name="" id="" style="width: 150px;" disabled="disabled">
+                  	#dict("CHILD_EDU",$!supinvestdata.childEdu)
+                  </select></td>
+              </tr>
+          </table>
+         </div>
+         
+         <div class="form-bd" id="formsId" style="margin-top: 0px;padding-top: 0px;">
+          <table cellpadding="0" cellspacing="0" class="table-bd" border="1" bordercolor="#cccccc" style="width: 100%;">
+            <colgroup>
+              <col width="10%" />
+              <col width="30%" />
+              <col width="10%" />
+              <col width="30%" />
+            </colgroup>
+              <tr><td class="titlec" colspan="4" style="text-align: center;">经营及财务状况</td></tr>
+              
+              <tr>
+	              <td class="titlefc3"><label for="">业务年限(年):</label></td>
+		          <td><input  type="text" class="rinpsty" name="" id="" value="$!supinvestdata.serviceLife"     readonly="readonly" /></td>
+		          <td class="titlefc3"><label for="">年可支配收入(元):</label></td>
+		          <td><input  type="text" class="rinpsty" name="" id="" value="$!supinvestdata.annualDisIncome"     readonly="readonly"  /></td>
+              </tr>
+              
+              <tr>
+	              <td class="titlefc3"><label for="">主营业务收入(元):</label></td>
+		          <td><input  type="text" class="rinpsty" name="" id="" value="$!supinvestdata.mainBusinessIncome"     readonly="readonly" /></td>
+		          <td class="titlefc3"><label for="">其他工作年收入(元):</label></td>
+		          <td><input  type="text" class="rinpsty" name="" id="" value="$!supinvestdata.otherImcome"     readonly="readonly" /></td>
+              </tr>
+              
+              <tr>
+	              <td class="titlefc3"><label for="">流动资产(元):</label></td>
+		          <td><input  type="text" class="rinpsty" name="" id="" value="$!supinvestdata.currentAssets"     readonly="readonly" /></td>
+		          <td class="titlefc3"><label for="">存货(元):</label></td>
+		          <td><input  type="text" class="rinpsty" name="" id="" value="$!supinvestdata.stock"     readonly="readonly" /></td>
+              </tr>
+              
+              <tr>
+	              <td class="titlefc3"><label for="">固定资产(元):</label></td>
+		          <td><input  type="text" class="rinpsty" name="" id="" value="$!supinvestdata.fixedAssets"     readonly="readonly" /></td>
+		          <td class="titlefc3"><label for="">资产总计(元):</label></td>
+		          <td><input  type="text" class="rinpsty" name="" id="" value="$!supinvestdata.totalAssets"     readonly="readonly" /></td>
+              </tr>
+              
+              <tr>
+	              <td class="titlefc3"><label for="">短期负债(元):</label></td>
+		          <td><input  type="text" class="rinpsty" name="" id="" value="$!supinvestdata.shortTermLiab"     readonly="readonly" /></td>
+		          <td class="titlefc3"><label for="">负债总计(元):</label></td>
+		          <td><input  type="text" class="rinpsty" name="" id="" value="$!supinvestdata.totalLiab"     readonly="readonly" /></td>
+              </tr>
+              <tr>
+	              <td class="titlefc3"><label for="">所有者权益(元):</label></td>
+		          <td><input  type="text" class="rinpsty" name="" id="" value="$!supinvestdata.ownedEqu"     readonly="readonly" /></td>
+		          <td class="titlefc3"><label for="">私人用途分期付款(元):</label></td>
+		          <td><input  type="text" class="rinpsty" name="" id="" value="$!supinvestdata.payPrivateUse"     readonly="readonly" /></td>
+              </tr>
+          </table>
+         </div>
+         
+         
+      </form>
+      
+      <div class="submit">
+        <input type="button" onclick="returnUrl()" value="返回" />
+      </div>
+      
+    </div>
+  </div>
+  <script type="text/javascript">
+  	#set ($formName = "'#id_module_form'")
+	var layout = new FormsLayout("formsId");
+	window.top.currentWindow.setLayout(layout);
+	
+	
+	$(document).ready(function() {
+	});
+	
+	// 返回
+	function returnUrl(){
+		window.location.href="javascript:history.back();";
+	}
+	
+	
+  </script>
+  
+</body>
+#parse ("common/iframe_page_footer.htm")

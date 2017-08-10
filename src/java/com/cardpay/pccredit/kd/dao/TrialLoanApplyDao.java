@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
+import com.cardpay.pccredit.kd.model.LoanUploadData;
 import com.cardpay.pccredit.kd.model.SupplementaryInvestigationData;
 import com.cardpay.pccredit.kd.model.TrialLoanApply;
 import com.wicresoft.util.annotation.Mapper;
@@ -17,4 +18,10 @@ public interface TrialLoanApplyDao {
 									  @Param(value = "amt") String amt);
 	
 	public List<SupplementaryInvestigationData> selectSuppleMentInformation(@Param(value = "id") String id);
+	
+	
+	public List<LoanUploadData> selectLoanUploadDataList(@Param(value = "appId") String appId,
+			@Param(value = "type") String type);
+	//int selectLoanUploadDataCount(@Param(value = "batchId") String batchId);
+	
 }

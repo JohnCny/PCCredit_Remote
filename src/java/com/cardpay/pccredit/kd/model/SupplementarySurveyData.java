@@ -1,5 +1,7 @@
 package com.cardpay.pccredit.kd.model;
 
+import java.util.Date;
+
 import com.wicresoft.jrad.base.database.model.BusinessModel;
 import com.wicresoft.jrad.base.database.model.ModelParam;
 
@@ -39,10 +41,17 @@ public class SupplementarySurveyData extends BusinessModel{
 	private String totalAssets; // '经营及财务状况-资产总计',
 	private String totalLiab; // '经营及财务状况-负债总计',
 	private String payPrivateUse; // '经营及财务状况-私人用途分期付款',
+	private Date investTime;//调查时间
 	private String remarks; // '备注'                                             
 	                                                                
 	
 	
+	public Date getInvestTime() {
+		return investTime;
+	}
+	public void setInvestTime(Date investTime) {
+		this.investTime = investTime;
+	}
 	public String getApplyId() {
 		return applyId;
 	}
