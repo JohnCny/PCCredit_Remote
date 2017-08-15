@@ -12,6 +12,17 @@ package com.cardpay.pccredit.ipad.model;
 public class Result {
 	private String status;
 	private String reason;
+	private int quota;
+	
+	
+	
+	
+	public int getQuota() {
+		return quota;
+	}
+	public void setQuota(int quota) {
+		this.quota = quota;
+	}
 	public String getStatus() {
 		return status;
 	}

@@ -174,7 +174,7 @@ public class PcTrialLoanApplyController extends BaseController {
 			JRadModelAndView mv = new JRadModelAndView("/kd/picture_view_browse", request);
 			String appId = request.getParameter("id");//申请id
 			String type = request.getParameter("type");//身份证等等
-			
+			//triservice.insert();
 			List<LoanUploadData> list = trialLoanApplyDao.selectLoanUploadDataList(appId,type);
 			mv.addObject("QzApplnAttachmentDetail", list);
 			return mv;
