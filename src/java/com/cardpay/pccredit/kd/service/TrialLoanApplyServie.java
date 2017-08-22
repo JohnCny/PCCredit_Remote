@@ -788,6 +788,7 @@ public class TrialLoanApplyServie {
     	apy.setAge(age+"");
     	apy.setCardNum(request.getParameter("cardNum"));
     	apy.setApplyAmt(request.getParameter("applyAmt"));
+    	apy.setLoanTerm(request.getParameter("loanTerm"));
     	trialLoanApplyDao.insertCustomerLoanApply(apy);
     }
     
