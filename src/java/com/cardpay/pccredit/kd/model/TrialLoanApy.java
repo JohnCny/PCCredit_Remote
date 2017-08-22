@@ -1,12 +1,15 @@
 package com.cardpay.pccredit.kd.model;
 
-import com.wicresoft.jrad.base.web.filter.BaseQueryFilter;
+import com.wicresoft.jrad.base.database.model.BusinessModel;
+import com.wicresoft.jrad.base.database.model.ModelParam;
 
 
 /**
  * 提额申请信息
  */
-public class TrialLoanApply  extends BaseQueryFilter{
+public class TrialLoanApy {
+	private static final long serialVersionUID = 1L;
+	
 	  private String id;
 	  private String customerName;
 	  private String cardId;
@@ -16,54 +19,37 @@ public class TrialLoanApply  extends BaseQueryFilter{
 	  private String applyTime;
 	  private String loanState;//0-待调查 1-补充调查 2-快审中 3-通过4-拒绝
 	  private String remarks;
-	  
-	  private String AuditAmt;//审批通过金额
-	  private String AuditTime;//审批时间
-	  private String chineseName;
-	  
+	  private String auditAmt;//审批通过金额
+	  private String auditTime;//审批时间
 	  private String creditAmt;
 	  private String cardNum;
+	  private String sex;
+	  private String age;
 	  
 	  
 	  
-	  
-	
-	public String getCardNum() {
-		return cardNum;
-	}
-	public void setCardNum(String cardNum) {
-		this.cardNum = cardNum;
-	}
-	public String getCreditAmt() {
-		return creditAmt;
-	}
-	public void setCreditAmt(String creditAmt) {
-		this.creditAmt = creditAmt;
-	}
-	public String getChineseName() {
-		return chineseName;
-	}
-	public void setChineseName(String chineseName) {
-		this.chineseName = chineseName;
-	}
-	public String getAuditAmt() {
-		return AuditAmt;
-	}
-	public void setAuditAmt(String auditAmt) {
-		AuditAmt = auditAmt;
-	}
-	public String getAuditTime() {
-		return AuditTime;
-	}
-	public void setAuditTime(String auditTime) {
-		AuditTime = auditTime;
-	}
 	public String getId() {
 		return id;
 	}
 	public void setId(String id) {
 		this.id = id;
 	}
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+	public String getSex() {
+		return sex;
+	}
+	public void setSex(String sex) {
+		this.sex = sex;
+	}
+	public String getAge() {
+		return age;
+	}
+	public void setAge(String age) {
+		this.age = age;
+	}
+	
 	public String getCustomerName() {
 		return customerName;
 	}
@@ -112,4 +98,32 @@ public class TrialLoanApply  extends BaseQueryFilter{
 	public void setRemarks(String remarks) {
 		this.remarks = remarks;
 	}
+	public String getAuditAmt() {
+		return auditAmt;
+	}
+	public void setAuditAmt(String auditAmt) {
+		this.auditAmt = auditAmt;
+	}
+	public String getAuditTime() {
+		return auditTime;
+	}
+	public void setAuditTime(String auditTime) {
+		this.auditTime = auditTime;
+	}
+	public String getCreditAmt() {
+		return creditAmt;
+	}
+	public void setCreditAmt(String creditAmt) {
+		this.creditAmt = creditAmt;
+	}
+	public String getCardNum() {
+		return cardNum;
+	}
+	public void setCardNum(String cardNum) {
+		this.cardNum = cardNum;
+	}
+	  
+	  
+	  
+	  
 }

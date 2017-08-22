@@ -22,15 +22,10 @@
               <tr><td class="titlec" colspan="4" style="text-align: center;">模型评估结果</td></tr>
               
               <tr>
-              <td class="titlefc3"><label for="assessResult">评估结果：</label></td>
-	          <td><input  type="text" class="rinpsty" name="" id="" value="通过" disabled="disabled"/></td>
-	          <td class="titlefc3"><span></span><label for="assessAmt" >评估金额(元):</label></td>
-	          <td><input  type="text" class="rinpsty" name="" id="" value="200000" readonly="readonly"/></td>
-              </tr>
-              
-              <tr>
-              <td class="titlefc3"><span></span><label for="refuseReason" >拒绝原因:</label></td>
-	          <td><input  type="text" class="rinpsty" name="refuseReason" id="refuseReason" value="" disabled="disabled"/></td>
+		          <td class="titlefc3"><span></span><label for="assessAmt" >评估金额(元):</label></td>
+		          <td><input  type="text" class="rinpsty" name="" id="" value="$!applylist.creditAmt" readonly="readonly"/></td>
+		          <td class="titlefc3"><span></span><label for="refuseReason" >描述:</label></td>
+		          <td><input  type="text" class="rinpsty" name="refuseReason" id="refuseReason" value="$!applylist.remarks" disabled="disabled"/></td>
               </tr>
               
           </table>
@@ -81,7 +76,7 @@
                   	#dict("KD_STATUS","")
                   </select>
               </td>
-              <td  class="titlefc3"><label for="amt">提额金额:</label></td>
+              <td  class="titlefc3"><label for="amt">提额金额(元):</label></td>
               <td><input  type="text" class="rinpsty" name="amt" id="amt" value=""/></td>
             </tr>
           </table>
@@ -123,13 +118,14 @@
 	    		return;
 	    	}else{
 	    		if ($($formName).valid()) {
-					var formjson = $($formName).serialize();
-					
-		 	          $.get($($formName).attr("action"), formjson, function(data, textStatus, jqXhr) {
+	    			 var formjson = $($formName).serialize();
+		 	         $.get($($formName).attr("action"), formjson, function(data, textStatus, jqXhr) {
 		 	            if (data.success) {
 		 	            	topWin.Dialog.message("保存成功!");
 		 	            	window.location.href="${contextPath}/ipad/ks/browse.page";
-		 	            }
+		 	            }/* else{
+		 	            	topWin.Dialog.message("保存失败!");
+		 	            } */
 		 	          });
 				}
 	    	}

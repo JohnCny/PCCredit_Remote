@@ -44,8 +44,14 @@ public class SupplementarySurveyData extends BusinessModel{
 	private Date investTime;//调查时间
 	private String remarks; // '备注'                                             
 	                                                                
+	private String cardId;//身份证号
 	
-	
+	public String getCardId() {
+		return cardId;
+	}
+	public void setCardId(String cardId) {
+		this.cardId = cardId;
+	}
 	public Date getInvestTime() {
 		return investTime;
 	}

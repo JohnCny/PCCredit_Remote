@@ -13,11 +13,12 @@
 	 <result column="APPLY_TIME" property="applyTime" />
 	 <result column="LOAN_STATE" property="loanState" />
 	 <result column="REMARKS" property="remarks" />
+	 <result column="CREDIT_AMT" property="creditAmt" />
 </resultMap>
 
 <select id="findCustomerApplicationIntopieceDecisionForm" parameterType="com.cardpay.pccredit.kd.model.TrialLoanApply"
     resultMap="resultMap">
-      select ID,CUSTOMER_NAME,CARD_ID,PHONE_NO,APPLY_AMT,LOAN_TERM,LOAN_STATE,REMARKS,
+      select ID,CUSTOMER_NAME,CARD_ID,PHONE_NO,APPLY_AMT,LOAN_TERM,LOAN_STATE,REMARKS,CREDIT_AMT,
   date_format(APPLY_TIME,'%Y-%m-%d %H:%i:%S') as APPLY_TIME
    from customer_loan_apply where LOAN_STATE ='2'
   <if test="chineseName != null and chineseName != '' ">

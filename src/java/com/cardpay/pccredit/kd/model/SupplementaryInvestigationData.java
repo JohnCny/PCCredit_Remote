@@ -12,6 +12,8 @@ public class SupplementaryInvestigationData {
 	  private String phoneNo;
 	  private String applyAmt;
 	  private String loanTerm;
+	  private String age;
+	  private String sex;
 	
 	  /**
 	   * 补充调查输入信息
@@ -241,9 +243,17 @@ public class SupplementaryInvestigationData {
 	}
 	public void setRemarks(String remarks) {
 		this.remarks = remarks;
+	}
+	public String getAge() {
+		return age;
+	}
+	public void setAge(String age) {
+		this.age = age;
+	}
+	public String getSex() {
+		return sex;
+	}
+	public void setSex(String sex) {
+		this.sex = sex;
 	} 		
-	  
-	  
-	  
-	  
 }

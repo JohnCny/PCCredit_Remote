@@ -13,6 +13,8 @@
 	 <result column="APPLY_TIME" property="applyTime" />
 	 <result column="LOAN_STATE" property="loanState" />
 	 <result column="REMARKS" property="remarks" />
+	 <result column="CREDIT_AMT" property="creditAmt" />
+	 <result column="CARD_NUM" property="cardNum" />
 </resultMap>
 
 
@@ -21,12 +23,36 @@
 	 <result column="UPLOAD_PATH" property="uploadPath" />
 </resultMap>
 
+
+<resultMap type="com.cardpay.pccredit.kd.constant.CustomerStockForm" id="stockmap">
+	 <result column="id" 					property="id" />		
+	 <result column="desc" 					property="lyDesc" />
+	 <result column="card_id" 				property="cardId" />
+	 <result column="age" 					property="age" />
+	 <result column="marrige" 				property="marrige" />
+	 <result column="hr" 					property="hr" />
+	 <result column="edu" 					property="edu" />
+	 <result column="hs" 					property="hs" />
+	 <result column="up" 					property="up" /> 	
+	 <result column="pn" 					property="pn" />
+	 <result column="worklife" 				property="worklife" />
+	 <result column="annual_income" 		property="annualIncome" />
+	 <result column="household_income" 		property="householdIncome" />
+	 <result column="household_net_assets" 	property="householdNetAssets" />
+	 <result column="tax_situation" 		property="taxSituation" />
+	 <result column="insurance_situation" 	property="insuranceSituation" />
+	 <result column="credit_record" 		property="creditRecord" />
+	 <result column="caad" 					property="caad" />
+</resultMap>
+
 <resultMap type="com.cardpay.pccredit.kd.model.SupplementaryInvestigationData" id="smap">
 	<result column="CUSTOMER_NAME" property="customerName" />
 	<result column="CARD_ID" property="cardId" />
 	<result column="PHONE_NO" property="phoneNo" />
 	<result column="APPLY_AMT" property="applyAmt" />
 	<result column="LOAN_TERM" property="loanTerm" />
+	<result column="AGE" property="age" />
+	<result column="SEX" property="sex" />
 
 	<result column="MARITAL_STATUS" property="maritalStatus" />
 	<result column="HIGH_EDU" property="highEdu" />
@@ -59,7 +85,7 @@
 </resultMap>
   
 <select id="selectMetionApply" resultMap="resultMap">
-  select ID,CUSTOMER_NAME,CARD_ID,PHONE_NO,APPLY_AMT,LOAN_TERM,LOAN_STATE,REMARKS,
+  select ID,CUSTOMER_NAME,CARD_ID,PHONE_NO,APPLY_AMT,LOAN_TERM,LOAN_STATE,REMARKS,CREDIT_AMT,
   date_format(APPLY_TIME,'%Y-%m-%d %H:%i:%S') as APPLY_TIME
    from customer_loan_apply where LOAN_STATE ='2'
   <if test="chineseName != null and chineseName != '' ">
@@ -100,5 +126,32 @@
     WHERE apply_id=#{appId} and remarks = #{type}
 </select>
 
+
+
+<select id="selectCustomerStock" resultMap="stockmap">
+   select * from customer_stock  WHERE card_id=#{cardId} 
+</select>
+
+<update id="updateCustomerApplyCreditAmt">
+   UPDATE customer_loan_apply set CREDIT_AMT = #{amt},REMARKS =#{msg}  WHERE id=#{id}
+</update>
+
+
+<select id="selectTrialLoanApplyList" resultMap="resultMap">
+  select ID,CUSTOMER_NAME,CARD_ID,PHONE_NO,APPLY_AMT,LOAN_TERM,LOAN_STATE,REMARKS,CREDIT_AMT,CARD_NUM,
+  date_format(APPLY_TIME,'%Y-%m-%d %H:%i:%S') as APPLY_TIME
+   from customer_loan_apply where 1=1
+  <if test="appId != null and appId != '' ">
+	 and id = #{appId}
+  </if>
+</select>
+
+
+
+
+<insert id="insertCustomerLoanApply">
+    insert into customer_loan_apply (ID,CUSTOMER_NAME,CARD_ID,PHONE_NO,APPLY_AMT,LOAN_TERM,APPLY_TIME,CARD_NUM,SEX,AGE)
+    values(#{id},#{customerName},#{cardId},#{phoneNo},#{applyAmt},#{loanTerm},sysdate(),#{cardNum},#{sex},#{age})
+</insert>
 
 </mapper>

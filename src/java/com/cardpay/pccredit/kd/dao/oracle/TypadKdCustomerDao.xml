@@ -57,7 +57,7 @@
 
 
 <select id="selectSqCustomer" resultMap="TypadKdCustomer">
-select distinct  b.ID,b.CUSTOMER_NAME,b.CARD_ID,b.PHONE_NO,b.APPLY_AMT,b.LOAN_TERM,b.APPLY_TIME,b.LOAN_STATE,b.REMARKS,
+select distinct  b.ID,b.CUSTOMER_NAME,b.CARD_ID,b.PHONE_NO,b.APPLY_AMT,b.LOAN_TERM,b.APPLY_TIME,b.LOAN_STATE,b.REMARKS,b.AGE,b.SEX,
 L.APPLY_ID as APPLY_ID ,s.APPLY_ID as APPLY_ID1
  from customer_loan_apply b left join loan_data_upload l on l.apply_id=b.id
 left join supplementary_survey_data s on s.apply_id=b.id

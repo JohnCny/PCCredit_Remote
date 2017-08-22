@@ -1,5 +1,9 @@
 package com.cardpay.pccredit.kd.controller;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -8,10 +12,14 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import net.sf.json.JSONObject;
 import net.sf.json.JsonConfig;
 
+import org.apache.commons.lang.StringUtils;
+import org.apache.http.HttpResponse;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -19,12 +27,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.cardpay.pccredit.customer.web.AmountAdjustmentForm;
-import com.cardpay.pccredit.intopieces.constant.Constant;
-import com.cardpay.pccredit.ipad.constant.IpadConstant;
 import com.cardpay.pccredit.ipad.model.Result;
 import com.cardpay.pccredit.ipad.util.JsonDateValueProcessor;
-import com.cardpay.pccredit.jnpad.model.JnUserLoginResult;
 import com.cardpay.pccredit.kd.model.SupplementaryInvestigationData;
 import com.cardpay.pccredit.kd.model.SupplementarySurveyData;
 import com.cardpay.pccredit.kd.model.TrialLoanApply;
@@ -34,7 +38,6 @@ import com.wicresoft.jrad.base.web.result.JRadReturnMap;
 
 @Controller
 public class TrialLoanApplyController {
-
 	@Autowired
 	private TrialLoanApplyServie trialLoanApplyServie;
 	/**
@@ -66,6 +69,8 @@ public class TrialLoanApplyController {
 		if (returnMap.isSuccess()) {
 			try {
 				trialLoanApplyServie.doUpdateCustomerApply(request);
+				/*returnMap.put("status",request.getParameter("status"));
+				returnMap.put("amt",request.getParameter("amt"));*/
 				returnMap.put("message","提交成功");
 			} catch (Exception e) {
 				returnMap.put("message","提交失败");
@@ -116,9 +121,6 @@ public class TrialLoanApplyController {
 				map.put("result",result);
 				JSONObject json = JSONObject.fromObject(map, jsonConfig);
 				return json.toString();
-			}else{
-				result.setStatus("success");
-				map.put("result",result);
 			}
 		}
 		
@@ -132,21 +134,24 @@ public class TrialLoanApplyController {
 				map.put("result",result);
 				JSONObject json = JSONObject.fromObject(map, jsonConfig);
 				return json.toString();
-			}else{
-				result.setStatus("success");
-				map.put("result",result);
 			}
 		}  
 
-		// 提交审核审批
+		//  save
 		try {
 			trialLoanApplyServie.saveBcdc(supplementarySurveyData);
+			result.setStatus("success");
+			map.put("result",result);
 		} catch (Exception e) {
+			result.setStatus("fail");
+			result.setReason(e.getMessage());
+			map.put("result",result);
 			e.printStackTrace();
 		}
 		JSONObject json = JSONObject.fromObject(map, jsonConfig);
 		return json.toString();
 	}
+	
 	
 	
 	// 判断是否为整数
@@ -202,4 +207,224 @@ public class TrialLoanApplyController {
     	ATT_DOUBLE.put("payPrivateUse",supplementarySurveyData.getPayPrivateUse());
     	return ATT_DOUBLE;
     }
+    
+    
+   //============================================================================//
+    /**
+     * 接受微信公众号提交的提额申请
+     */
+    @ResponseBody
+	@RequestMapping(value = "/ipad/ks/getQuotaApply.json")
+	@JRadOperation(JRadOperation.APPROVE)
+	public String getQuotaApply(HttpServletRequest request) {
+		JRadReturnMap returnMap = new JRadReturnMap();
+		Result result = new  Result();
+		JsonConfig jsonConfig = new JsonConfig();
+		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
+		
+		
+		System.out.println(request.getParameter("id"));
+		System.out.println(request.getParameter("customerName"));
+		System.out.println(request.getParameter("sfzh"));
+		System.out.println(request.getParameter("phoneNo"));
+		System.out.println(request.getParameter("cardNum"));
+		System.out.println(request.getParameter("applyAmt"));
+		System.out.println(request.getParameter("loanTerm"));
+		System.out.println(request.getParameter("applyTime"));
+		
+    	if(StringUtils.isEmpty(request.getParameter("id"))){
+    		result.setStatus("fail");
+			result.setReason("申请id不能为空");
+			returnMap.put("result",result);
+			JSONObject json = JSONObject.fromObject(returnMap, jsonConfig);
+			return json.toString();
+    	}
+    	
+    	
+    	if(StringUtils.isEmpty(request.getParameter("customerName"))){
+    		result.setStatus("fail");
+			result.setReason("客户姓名不能为空");
+			returnMap.put("result",result);
+			JSONObject json = JSONObject.fromObject(returnMap, jsonConfig);
+			return json.toString();
+    	}
+    	
+    	
+    	if(StringUtils.isEmpty(request.getParameter("sfzh"))){
+    		result.setStatus("fail");
+			result.setReason("身份证号码不能为空");
+			returnMap.put("result",result);
+			JSONObject json = JSONObject.fromObject(returnMap, jsonConfig);
+			return json.toString();
+    	}
+    	
+    	
+    	if(StringUtils.isEmpty(request.getParameter("phoneNo"))){
+    		result.setStatus("fail");
+			result.setReason("手机号码不能为空");
+			returnMap.put("result",result);
+			JSONObject json = JSONObject.fromObject(returnMap, jsonConfig);
+			return json.toString();
+    	}
+    	
+    	if(StringUtils.isEmpty(request.getParameter("cardNum"))){
+    		result.setStatus("fail");
+			result.setReason("银行卡号不能为空");
+			returnMap.put("result",result);
+			JSONObject json = JSONObject.fromObject(returnMap, jsonConfig);
+			return json.toString();
+    	}
+    	
+    /*	if(StringUtils.isEmpty(request.getParameter("applyAmt"))){
+    		result.setStatus("fail");
+			result.setReason("申请金额不能为空");
+			returnMap.put("result",result);
+			JSONObject json = JSONObject.fromObject(returnMap, jsonConfig);
+			return json.toString();
+    	}
+    	
+    	if(StringUtils.isEmpty(request.getParameter("loanTerm"))){
+    		result.setStatus("fail");
+			result.setReason("贷款期限不能为空");
+			returnMap.put("result",result);
+			JSONObject json = JSONObject.fromObject(returnMap, jsonConfig);
+			return json.toString();
+    	}
+    	
+    	if(StringUtils.isEmpty(request.getParameter("applyTime"))){
+    		result.setStatus("fail");
+			result.setReason("申请时间不能为空");
+			returnMap.put("result",result);
+			JSONObject json = JSONObject.fromObject(returnMap, jsonConfig);
+			return json.toString();
+    	}*/
+    	
+    	
+		
+		if (returnMap.isSuccess()) {
+			try {
+				trialLoanApplyServie.saveApply(request);
+				result.setStatus("success");
+				result.setReason("提交成功");
+				returnMap.put("result",result);
+			} catch (Exception e) {
+				result.setStatus("fail");
+				result.setReason("提交失败");
+				returnMap.put("result",result);
+			}
+		}
+		
+		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
+		JSONObject json = JSONObject.fromObject(returnMap, jsonConfig);
+		return json.toString();
+	}
+    
+    
+    /**
+     * 通过快信接口获取数据
+     * @param request
+     * @return
+     */
+    @ResponseBody
+   	@RequestMapping(value = "/ipad/ks/getCreditAmt.json")
+   	@JRadOperation(JRadOperation.APPROVE)
+   	public String getCreditAmt(HttpServletRequest request) {
+   		JRadReturnMap returnMap = new JRadReturnMap();
+   		Result result = new  Result();
+   		JsonConfig jsonConfig = new JsonConfig();
+   		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
+   		
+   		System.out.println(request.getParameter("customerName"));// 客户姓名
+   		System.out.println(request.getParameter("sfzh")); //身份证号
+   		System.out.println(request.getParameter("phoneNo"));//手机号码
+   		System.out.println(request.getParameter("cardNum"));//银行卡号
+
+       	
+       	if(StringUtils.isEmpty(request.getParameter("customerName"))){
+       		result.setStatus("fail");
+   			result.setReason("客户姓名不能为空");
+   			returnMap.put("result",result);
+   			JSONObject json = JSONObject.fromObject(returnMap, jsonConfig);
+   			return json.toString();
+       	}
+       	
+       	
+       	if(StringUtils.isEmpty(request.getParameter("sfzh"))){
+       		result.setStatus("fail");
+   			result.setReason("身份证号码不能为空");
+   			returnMap.put("result",result);
+   			JSONObject json = JSONObject.fromObject(returnMap, jsonConfig);
+   			return json.toString();
+       	}
+       	
+       	
+       	if(StringUtils.isEmpty(request.getParameter("phoneNo"))){
+       		result.setStatus("fail");
+   			result.setReason("手机号码不能为空");
+   			returnMap.put("result",result);
+   			JSONObject json = JSONObject.fromObject(returnMap, jsonConfig);
+   			return json.toString();
+       	}
+       	
+       	if(StringUtils.isEmpty(request.getParameter("cardNum"))){
+       		result.setStatus("fail");
+   			result.setReason("银行卡号不能为空");
+   			returnMap.put("result",result);
+   			JSONObject json = JSONObject.fromObject(returnMap, jsonConfig);
+   			return json.toString();
+       	}
+       	
+   		
+   		if (returnMap.isSuccess()) {
+   			try {
+   				com.cardpay.pccredit.kd.model.Result result1 = trialLoanApplyServie.
+   													  getCreditAmtChannelOfWeChat(request.getParameter("sfzh").trim(),
+																   				  request.getParameter("customerName").trim(),
+																   				  request.getParameter("phoneNo").trim(),
+																   				  request.getParameter("cardNum").trim());
+   				result.setStatus("success");
+   				result.setQuota(result1.getCreditAmt());
+   				result.setReason(result1.getMsg());
+   				returnMap.put("result",result);
+   			} catch (Exception e) {
+   				result.setStatus("fail");
+   				result.setReason("查询失败:"+e.getMessage());
+   				returnMap.put("result",result);
+   				e.printStackTrace();
+   			}
+   		}
+   		
+   		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
+   		JSONObject json = JSONObject.fromObject(returnMap, jsonConfig);
+   		return json.toString();
+   	}
+    
+    
+    @ResponseBody
+	@RequestMapping(value = "/ipad/ks/downLoadApk.json")
+	public String downLoadApk(HttpServletRequest request,HttpServletResponse response) throws Exception {
+		String path = "/home/yunPad.apk";
+		System.out.println("*****下载apk");
+		File file = new File(path);
+		if(file.exists()){
+			byte[] buff = new byte[2048]; 
+			int bytesRead;
+			response.setHeader("Content-Disposition", "attachment; filename=yunPad.apk");
+		    response.setContentType("application/vnd.android.package-archive");//设置response内容的类型 下载安卓应用apk
+			BufferedInputStream bis = new BufferedInputStream(new FileInputStream(path));
+			BufferedOutputStream bos = new BufferedOutputStream(response.getOutputStream());
+			while (-1 != (bytesRead = bis.read(buff, 0, buff.length))) {
+				bos.write(buff, 0, bytesRead);
+			}
+			bos.flush();
+			if (bis != null) {
+				bis.close();
+			}
+			if (bos != null) {
+				bos.close();
+			}
+		}
+		return null;
+	}
+    
 }

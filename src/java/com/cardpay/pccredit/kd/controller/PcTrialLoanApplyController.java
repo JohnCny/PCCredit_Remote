@@ -1,12 +1,16 @@
 package com.cardpay.pccredit.kd.controller;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import net.sf.json.JSONObject;
+import net.sf.json.JsonConfig;
 
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +20,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.cardpay.pccredit.customer.constant.CustomerInforConstant;
 import com.cardpay.pccredit.intopieces.filter.IntoPiecesFilter;
 import com.cardpay.pccredit.intopieces.model.QzApplnAttachmentDetail;
+import com.cardpay.pccredit.ipad.model.Result;
+import com.cardpay.pccredit.ipad.util.JsonDateValueProcessor;
 import com.cardpay.pccredit.kd.dao.TrialLoanApplyDao;
 import com.cardpay.pccredit.kd.model.LoanUploadData;
 import com.cardpay.pccredit.kd.model.SupplementaryInvestigationData;
@@ -28,12 +35,16 @@ import com.cardpay.pccredit.kd.service.TrialLoanApplyServie;
 import com.cardpay.pccredit.kd.service.TypadKdCustomerServie;
 import com.wicresoft.jrad.base.auth.JRadModule;
 import com.wicresoft.jrad.base.auth.JRadOperation;
+import com.wicresoft.jrad.base.constant.JRadConstants;
 import com.wicresoft.jrad.base.database.model.QueryResult;
 import com.wicresoft.jrad.base.web.JRadModelAndView;
 import com.wicresoft.jrad.base.web.controller.BaseController;
 import com.wicresoft.jrad.base.web.result.JRadPagedQueryResult;
 import com.wicresoft.jrad.base.web.result.JRadReturnMap;
+import com.wicresoft.jrad.base.web.security.LoginManager;
 import com.wicresoft.jrad.base.web.utility.WebRequestHelper;
+import com.wicresoft.jrad.modules.privilege.model.User;
+import com.wicresoft.util.spring.Beans;
 import com.wicresoft.util.spring.mvc.mv.AbstractModelAndView;
 
 @Controller
@@ -60,6 +71,11 @@ public class PcTrialLoanApplyController extends BaseController {
 		@RequestMapping(value = "browse.page", method = { RequestMethod.GET })
 		@JRadOperation(JRadOperation.BROWSE)
 		public AbstractModelAndView browse(@ModelAttribute TrialLoanApply filter,HttpServletRequest request) {
+			User user = (User) Beans.get(LoginManager.class).getLoggedInUser(request);
+			if(user == null ){
+				JRadModelAndView mv = new JRadModelAndView("/abnormal/404", request);
+				return mv;
+			}
 			filter.setRequest(request);
 			QueryResult<TrialLoanApply> result = trialLoanApplyServie.findCustomerApplicationIntopieceDecison(filter);
 			JRadPagedQueryResult<TrialLoanApply> pagedResult = new JRadPagedQueryResult<TrialLoanApply>(filter, result);
@@ -73,6 +89,11 @@ public class PcTrialLoanApplyController extends BaseController {
 		@RequestMapping(value = "spbrowse.page", method = { RequestMethod.GET })
 		@JRadOperation(JRadOperation.BROWSE)
 		public AbstractModelAndView spbrowse(@ModelAttribute TrialLoanApply filter,HttpServletRequest request) {
+			User user = (User) Beans.get(LoginManager.class).getLoggedInUser(request);
+			if(user == null ){
+				JRadModelAndView mv = new JRadModelAndView("/abnormal/404", request);
+				return mv;
+			}
 			filter.setRequest(request);
 			String appId=request.getParameter("appId");
 			filter.setId(appId);
@@ -93,6 +114,11 @@ public class PcTrialLoanApplyController extends BaseController {
 		@RequestMapping(value = "showIma.page", method = { RequestMethod.GET })
 		@JRadOperation(JRadOperation.BROWSE)
 		public AbstractModelAndView showIma(HttpServletRequest request) {
+			User user = (User) Beans.get(LoginManager.class).getLoggedInUser(request);
+			if(user == null ){
+				JRadModelAndView mv = new JRadModelAndView("/abnormal/404", request);
+				return mv;
+			}
 			String appId=request.getParameter("appId");
 			List<TypadKdCustomer> result=padKdCustomerServie.selectImageType(appId);
 			
@@ -127,6 +153,11 @@ public class PcTrialLoanApplyController extends BaseController {
 		@RequestMapping(value = "downLoadYxzlJn.json",method = { RequestMethod.GET })
 		@JRadOperation(JRadOperation.EXPORT)
 		public AbstractModelAndView downLoadYxzlJn(HttpServletRequest request,HttpServletResponse response){
+			User user = (User) Beans.get(LoginManager.class).getLoggedInUser(request);
+			if(user == null ){
+				JRadModelAndView mv = new JRadModelAndView("/abnormal/404", request);
+				return mv;
+			}
 			try {
 				String s =request.getParameter("id");
 				CustomerServi.downLoadYxzlJn(response,s);
@@ -142,6 +173,11 @@ public class PcTrialLoanApplyController extends BaseController {
 		@RequestMapping(value = "showBcDc.page", method = { RequestMethod.GET })
 		@JRadOperation(JRadOperation.BROWSE)
 		public AbstractModelAndView showBcDc(HttpServletRequest request) {
+			User user = (User) Beans.get(LoginManager.class).getLoggedInUser(request);
+			if(user == null ){
+				JRadModelAndView mv = new JRadModelAndView("/abnormal/404", request);
+				return mv;
+			}
 			String appId=request.getParameter("appId");
 			List<SupplementaryInvestigationData> list = trialLoanApplyDao.selectSuppleMentInformation(appId);
 			JRadModelAndView mv = new JRadModelAndView("/kd/decision_Form", request);
@@ -154,6 +190,12 @@ public class PcTrialLoanApplyController extends BaseController {
 		@RequestMapping(value = "updateAll.json")
 		public JRadReturnMap updateAll(HttpServletRequest request) {
 			JRadReturnMap returnMap = new JRadReturnMap();
+			User user = (User) Beans.get(LoginManager.class).getLoggedInUser(request);
+			if(user==null){
+				returnMap.put(JRadConstants.SUCCESS, false);
+				returnMap.put(JRadConstants.MESSAGE, "您没有操作权限");
+				return returnMap;
+			}
 			if (returnMap.isSuccess()) {
 				try {
 					triservice.doUpdateCustomerApply(request);
@@ -171,10 +213,15 @@ public class PcTrialLoanApplyController extends BaseController {
 		@ResponseBody
 		@RequestMapping(value = "findPageView.page", method = { RequestMethod.GET })
 		public AbstractModelAndView findPageView(HttpServletRequest request) {
+			User user = (User) Beans.get(LoginManager.class).getLoggedInUser(request);
+			if(user == null ){
+				JRadModelAndView mv = new JRadModelAndView("/abnormal/404", request);
+				return mv;
+			}
 			JRadModelAndView mv = new JRadModelAndView("/kd/picture_view_browse", request);
 			String appId = request.getParameter("id");//申请id
 			String type = request.getParameter("type");//身份证等等
-			
+			//triservice.insert();
 			List<LoanUploadData> list = trialLoanApplyDao.selectLoanUploadDataList(appId,type);
 			mv.addObject("QzApplnAttachmentDetail", list);
 			return mv;
