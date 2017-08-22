@@ -51,6 +51,8 @@
 	<result column="PHONE_NO" property="phoneNo" />
 	<result column="APPLY_AMT" property="applyAmt" />
 	<result column="LOAN_TERM" property="loanTerm" />
+	<result column="AGE" property="age" />
+	<result column="SEX" property="sex" />
 
 	<result column="MARITAL_STATUS" property="maritalStatus" />
 	<result column="HIGH_EDU" property="highEdu" />
@@ -148,8 +150,8 @@
 
 
 <insert id="insertCustomerLoanApply">
-    insert into customer_loan_apply (ID,CUSTOMER_NAME,CARD_ID,PHONE_NO,APPLY_AMT,LOAN_TERM,APPLY_TIME,CARD_NUM)
-    values(#{id},#{customerName},#{cardId},#{phoneNo},#{applyAmt},#{loanTerm},#{applyTime},#{cardNum})
+    insert into customer_loan_apply (ID,CUSTOMER_NAME,CARD_ID,PHONE_NO,APPLY_AMT,LOAN_TERM,APPLY_TIME,CARD_NUM,SEX,AGE)
+    values(#{id},#{customerName},#{cardId},#{phoneNo},#{applyAmt},#{loanTerm},sysdate(),#{cardNum},#{sex},#{age})
 </insert>
 
 </mapper>

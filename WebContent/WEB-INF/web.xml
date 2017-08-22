@@ -4,6 +4,25 @@
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 	version="2.5">
 	<display-name>JRadBase</display-name>
+	
+<!-- XSS过滤器  -->
+   <filter>
+	    <filter-name>XSSFilter</filter-name>
+	    <filter-class>xss.XSSCheckFilter</filter-class>
+	    <init-param>
+			<param-name>errorPath</param-name>
+	        <param-value>/abnormal/404.htm</param-value>
+	    </init-param>
+	    <init-param>
+			<param-name>encoding</param-name>
+			<param-value>utf-8</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+	    <filter-name>XSSFilter</filter-name>
+	    <url-pattern>/*</url-pattern>
+	</filter-mapping> 
+<!-- XSS过滤器  -->	
     
 	<filter>
 		<filter-name>encodingFilter</filter-name>

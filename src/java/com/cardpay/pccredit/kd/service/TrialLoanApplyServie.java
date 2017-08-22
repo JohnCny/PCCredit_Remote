@@ -48,6 +48,8 @@ import org.springframework.stereotype.Service;
 
 
 
+
+
 import sun.util.logging.resources.logging;
 
 import com.cardpay.loanrating.widget.StockCredit;
@@ -61,6 +63,7 @@ import com.cardpay.pccredit.kd.model.SupplementaryInvestigationData;
 import com.cardpay.pccredit.kd.model.SupplementarySurveyData;
 import com.cardpay.pccredit.kd.model.TrialLoanApply;
 import com.cardpay.pccredit.kd.model.TrialLoanApy;
+import com.cardpay.pccredit.kd.utils.IdCard;
 import com.cardpay.unstockrating.widget.Unstock;
 import com.wicresoft.jrad.base.database.dao.common.CommonDao;
 
@@ -157,9 +160,13 @@ public class TrialLoanApplyServie {
 	}
 	
 	
-	/*public static void main(String[] args) {
-		System.out.println(sendRequest("1","3000"));
-	}*/
+	public static void main(String[] args) {
+		try {
+			System.out.println(sendRequest("3","3000"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 	
 	public List<SupplementaryInvestigationData> selectSuppleMentInformation(HttpServletRequest request){
 		String id = request.getParameter("appId");
@@ -251,7 +258,7 @@ public class TrialLoanApplyServie {
  		return result;
 	}
 	
-	 // return vo
+	 // return vo  dict和map 速度== 并不一定比 直接if好
 	public StockForm returnVo(CustomerStockForm stock){
 		StockForm form = new StockForm();
 		
@@ -272,11 +279,11 @@ public class TrialLoanApplyServie {
 		}else if("离异无小孩".equals(stock.getMarrige())){
 			form.setMarriage(4);
 		}else if("丧偶".equals(stock.getMarrige())){
-			form.setMarriage(-1);
+			form.setMarriage(5);
 		}else if("其他".equals(stock.getMarrige())){
-			form.setMarriage(-2);
+			form.setMarriage(-1);
 		}else if("未知".equals(stock.getMarrige())){
-			
+			form.setMarriage(-2);
 		}
 		
 		// 3.本地居住年数
@@ -745,7 +752,7 @@ public class TrialLoanApplyServie {
 		   HttpsURLConnection httpsConn = (HttpsURLConnection)reqURL.openConnection();
 
 		   // 取得该连接的输入流，以读取响应内容 
-		   InputStreamReader insr = new InputStreamReader(httpsConn.getInputStream());
+		   InputStreamReader insr = new InputStreamReader(httpsConn.getInputStream(), "utf-8");
 
 		   // 读取服务器的响应内容并显示
 		   int respInt = insr.read();
@@ -770,13 +777,17 @@ public class TrialLoanApplyServie {
     	apy.setId(request.getParameter("id"));
     	apy.setCustomerName(request.getParameter("customerName"));
     	apy.setCardId(request.getParameter("sfzh"));
+    	
+    	// 获取年龄和性别
+    	String cardId = IdCard.convertIdcarBy15bit(request.getParameter("sfzh").trim());
+    	String sex = IdCard.getGenderByIdCard(cardId);
+		int age = IdCard.getAgeByIdCard(cardId);
+		
     	apy.setPhoneNo(request.getParameter("phoneNo"));
-    	apy.setSex(request.getParameter("sex"));
-    	apy.setAge(request.getParameter("age"));
+    	apy.setSex(sex);
+    	apy.setAge(age+"");
     	apy.setCardNum(request.getParameter("cardNum"));
     	apy.setApplyAmt(request.getParameter("applyAmt"));
-    	apy.setLoanTerm(request.getParameter("loanTerm"));
-    	apy.setApplyTime(request.getParameter("applyTime"));
     	trialLoanApplyDao.insertCustomerLoanApply(apy);
     }
     
@@ -812,11 +823,11 @@ public class TrialLoanApplyServie {
 			int kuhxd = 0;
 
 			// 获取客户好信度
-			Map<String, String> map = getGoodReliability(sfzh,
-														 customerName,
+			Map<String, String> map = getGoodReliability(sfzh.trim(),
+														 customerName.trim(),
 														 "25e7d8ad2462481fb2ce11ac3dc069f5",
-														 phoneNo,
-														 cardNum);
+														 phoneNo.trim(),
+														 cardNum.trim());
 
 			// 查询成功
 			if ("0".equals(map.get("ret").toString())) {

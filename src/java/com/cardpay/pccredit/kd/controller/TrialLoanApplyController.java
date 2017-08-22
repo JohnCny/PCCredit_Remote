@@ -1,5 +1,9 @@
 package com.cardpay.pccredit.kd.controller;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -8,6 +12,7 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import net.sf.json.JSONObject;
 import net.sf.json.JsonConfig;
@@ -383,8 +388,9 @@ public class TrialLoanApplyController {
    				returnMap.put("result",result);
    			} catch (Exception e) {
    				result.setStatus("fail");
-   				result.setReason("查询失败");
+   				result.setReason("查询失败:"+e.getMessage());
    				returnMap.put("result",result);
+   				e.printStackTrace();
    			}
    		}
    		
@@ -393,5 +399,32 @@ public class TrialLoanApplyController {
    		return json.toString();
    	}
     
+    
+    @ResponseBody
+	@RequestMapping(value = "/ipad/ks/downLoadApk.json")
+	public String downLoadApk(HttpServletRequest request,HttpServletResponse response) throws Exception {
+		String path = "/home/yunPad.apk";
+		System.out.println("*****下载apk");
+		File file = new File(path);
+		if(file.exists()){
+			byte[] buff = new byte[2048]; 
+			int bytesRead;
+			response.setHeader("Content-Disposition", "attachment; filename=yunPad.apk");
+		    response.setContentType("application/vnd.android.package-archive");//设置response内容的类型 下载安卓应用apk
+			BufferedInputStream bis = new BufferedInputStream(new FileInputStream(path));
+			BufferedOutputStream bos = new BufferedOutputStream(response.getOutputStream());
+			while (-1 != (bytesRead = bis.read(buff, 0, buff.length))) {
+				bos.write(buff, 0, bytesRead);
+			}
+			bos.flush();
+			if (bis != null) {
+				bis.close();
+			}
+			if (bos != null) {
+				bos.close();
+			}
+		}
+		return null;
+	}
     
 }
