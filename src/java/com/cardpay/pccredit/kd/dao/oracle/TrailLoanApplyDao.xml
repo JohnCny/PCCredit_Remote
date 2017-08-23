@@ -15,6 +15,7 @@
 	 <result column="REMARKS" property="remarks" />
 	 <result column="CREDIT_AMT" property="creditAmt" />
 	 <result column="CARD_NUM" property="cardNum" />
+	 <result column="QUOTA_ID" property="quotaId" />
 </resultMap>
 
 
@@ -85,7 +86,7 @@
 </resultMap>
   
 <select id="selectMetionApply" resultMap="resultMap">
-  select ID,CUSTOMER_NAME,CARD_ID,PHONE_NO,APPLY_AMT,LOAN_TERM,LOAN_STATE,REMARKS,CREDIT_AMT,
+  select ID,CUSTOMER_NAME,CARD_ID,PHONE_NO,APPLY_AMT,LOAN_TERM,LOAN_STATE,REMARKS,CREDIT_AMT,QUOTA_ID,
   date_format(APPLY_TIME,'%Y-%m-%d %H:%i:%S') as APPLY_TIME
    from customer_loan_apply where LOAN_STATE ='2'
   <if test="chineseName != null and chineseName != '' ">
@@ -150,8 +151,17 @@
 
 
 <insert id="insertCustomerLoanApply">
-    insert into customer_loan_apply (ID,CUSTOMER_NAME,CARD_ID,PHONE_NO,APPLY_AMT,LOAN_TERM,APPLY_TIME,CARD_NUM,SEX,AGE)
-    values(#{id},#{customerName},#{cardId},#{phoneNo},#{applyAmt},#{loanTerm},sysdate(),#{cardNum},#{sex},#{age})
+    insert into customer_loan_apply (ID,CUSTOMER_NAME,CARD_ID,PHONE_NO,APPLY_AMT,LOAN_TERM,APPLY_TIME,CARD_NUM,SEX,AGE,QUOTA_ID)
+    values(#{id},#{customerName},#{cardId},#{phoneNo},#{applyAmt},#{loanTerm},sysdate(),#{cardNum},#{sex},#{age},#{quotaId})
 </insert>
 
+<!-- 根据指定id锁定提额表 -->
+<select id="lockCustomerLoanApplyById" resultMap="resultMap">
+	select id from customer_loan_apply where id = #{id} for update
+</select>
+	
+
+<update id="updateCustomerLoadApplyById">
+   UPDATE customer_loan_apply set CUSTOMER_MANAGER_ID = #{customerManagerId}  WHERE id=#{order}
+</update>
 </mapper>

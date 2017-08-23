@@ -58,7 +58,7 @@
             </colgroup>
            #foreach ($wait in $result.items)
             <tr ondblclick="javascript:$('#id_change_button').click();">
-              <td class="checkbox"><input type="radio" name="checkbox" value="$!wait.serialNumber@$!wait.customerId@$!wait.id@$!wait.applyQuota"/></td>
+              <td class="checkbox"><input type="radio" name="checkbox" value="$!wait.serialNumber@$!wait.customerId@$!wait.id@$!wait.applyQuota@$!wait.quotaId"/></td>
               <td nowrap="nowrap">$!wait.customerName</td>
               <td nowrap="nowrap">$!wait.cardId</td>
               <td nowrap="nowrap">$!wait.phoneNo</td>
@@ -127,7 +127,8 @@
 		$("#id_sp_button").click(function() {
 			if ($(".checkbox :checked").length == 1) {
 				var rowid = $("input[name='checkbox']:checked").val();
-				var url = "${contextPath}/ipad/ks/spbrowse.page?appId=" + rowid.split("@")[2];
+				var url = "${contextPath}/ipad/ks/spbrowse.page?appId=" + rowid.split("@")[2]+"&quotaId="+rowid.split("@")[4];
+
 				if (opsObj.formObj) {
 	                // 回调URL
 	                var callBackUrlObj = opsObj.formObj.find("div.pagebar div.page a.current");

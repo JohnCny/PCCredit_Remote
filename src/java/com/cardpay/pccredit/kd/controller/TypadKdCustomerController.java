@@ -52,6 +52,43 @@ public class TypadKdCustomerController {
 		JSONObject json = JSONObject.fromObject(map, jsonConfig);
 		return json.toString();
 	}
+	
+	/**
+	 * 调查历史查询
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/ipad/Customer/selectSqCustomerHistory.json", method = { RequestMethod.GET })
+	public String selectSqCustomerHistory(HttpServletRequest request){
+		Map<String, Object> map = new LinkedHashMap<String, Object>();
+		List<TypadKdCustomer>result=CustomerServi.selectSqCustomerHistory(request);
+		map.put("result", result);
+		map.put("size",result.size());
+		JsonConfig jsonConfig = new JsonConfig();
+		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
+		JSONObject json = JSONObject.fromObject(map, jsonConfig);
+		return json.toString();
+	}
+	
+	/**
+	 * 抢单查询
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/ipad/Customer/selectOrder.json", method = { RequestMethod.GET })
+	public String selectOrder(HttpServletRequest request){
+		Map<String, Object> map = new LinkedHashMap<String, Object>();
+		List<TypadKdCustomer>result=CustomerServi.selectOrder(request);
+		map.put("result", result);
+		map.put("size",result.size());
+		JsonConfig jsonConfig = new JsonConfig();
+		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
+		JSONObject json = JSONObject.fromObject(map, jsonConfig);
+		return json.toString();
+	}
+	
 	/**
 	 * 
 	 * @param request

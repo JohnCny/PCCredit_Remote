@@ -96,15 +96,17 @@ public class PcTrialLoanApplyController extends BaseController {
 			}
 			filter.setRequest(request);
 			String appId=request.getParameter("appId");
+			String quotaId=request.getParameter("quotaId");
 			filter.setId(appId);
 			QueryResult<TrialLoanApply> result = trialLoanApplyServie.findCustomerApplicationIntopieceDecison(filter);
 			JRadPagedQueryResult<TrialLoanApply> pagedResult = new JRadPagedQueryResult<TrialLoanApply>(filter, result);
 			JRadModelAndView mv = new JRadModelAndView("/kd/dkinput_decision", request);
 			TrialLoanApply applylist=result.getItems().get(0);
 			
-			//TODO 查询显示评估结果
+			//查询显示评估结果
 			mv.addObject("applylist", applylist);
 			mv.addObject("appId", appId);
+			mv.addObject("quotaId", quotaId);
 			mv.addObject(PAGED_RESULT, pagedResult);
 			return mv;
 		}

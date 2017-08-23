@@ -23,11 +23,17 @@ public class TrialLoanApply  extends BaseQueryFilter{
 	  
 	  private String creditAmt;
 	  private String cardNum;
-	  
+	  private String quotaId;
 	  
 	  
 	  
 	
+	public String getQuotaId() {
+		return quotaId;
+	}
+	public void setQuotaId(String quotaId) {
+		this.quotaId = quotaId;
+	}
 	public String getCardNum() {
 		return cardNum;
 	}
