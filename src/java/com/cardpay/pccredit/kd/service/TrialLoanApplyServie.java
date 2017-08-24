@@ -11,6 +11,7 @@ import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
+import java.net.URLEncoder;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -50,6 +51,14 @@ import org.springframework.stereotype.Service;
 
 
 
+
+
+
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionDefinition;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.DefaultTransactionDefinition;
+
 import sun.util.logging.resources.logging;
 
 import com.cardpay.loanrating.widget.StockCredit;
@@ -58,6 +67,7 @@ import com.cardpay.pccredit.kd.constant.Constant;
 import com.cardpay.pccredit.kd.constant.CustomerStockForm;
 import com.cardpay.pccredit.kd.constant.StockForm;
 import com.cardpay.pccredit.kd.dao.TrialLoanApplyDao;
+import com.cardpay.pccredit.kd.model.CustomerBelogsRelation;
 import com.cardpay.pccredit.kd.model.Result;
 import com.cardpay.pccredit.kd.model.SupplementaryInvestigationData;
 import com.cardpay.pccredit.kd.model.SupplementarySurveyData;
@@ -66,6 +76,7 @@ import com.cardpay.pccredit.kd.model.TrialLoanApy;
 import com.cardpay.pccredit.kd.utils.IdCard;
 import com.cardpay.unstockrating.widget.Unstock;
 import com.wicresoft.jrad.base.database.dao.common.CommonDao;
+import com.wicresoft.jrad.base.database.id.IDGenerator;
 
 @Service
 public class TrialLoanApplyServie {
@@ -75,6 +86,8 @@ public class TrialLoanApplyServie {
 	private  CommonDao commonDao;
 	@Autowired
 	private TrialLoanApplyDao trialLoanApplyDao ;
+	@Autowired
+	private PlatformTransactionManager txManager;
 
 	public List<TrialLoanApply> selectMetionApply(HttpServletRequest request){
 		String chineseName = request.getParameter("chineseName");
@@ -85,18 +98,22 @@ public class TrialLoanApplyServie {
 		String auditresult = request.getParameter("status");//结论
 		String id = request.getParameter("appId");//提额申请id
 		String amt = request.getParameter("amt");//金额
+		String quotaId = request.getParameter("quotaId");//
 		
 		//通过
 		if("APPROVE".equals(auditresult)){
 			
 			//try {
 				// repCode
-				int responseCode = sendRequest(id,amt);
-				
+				//int responseCode = sendRequest(quotaId,amt);
+				  String result = sendRequest(quotaId,amt);
+				  org.json.JSONObject model = new org.json.JSONObject(result);
 				// success
-				if(responseCode == 200){
+				if("Success".equals(model.getJSONObject("data").get("result").toString())){
 					// 成功更新申请表LOAN_STATE
 					trialLoanApplyDao.doUpdateCustomerApply(id,Constant.LOAN_STATE_3,amt);
+				}else{
+					throw new RuntimeException(model.getJSONObject("data").get("info").toString());
 				}
 			/*} catch (Exception e) {
 				e.printStackTrace();
@@ -112,7 +129,7 @@ public class TrialLoanApplyServie {
 	
 	
 	// 请求同步额度 方法  获取返回报文
-	public static int sendRequest(String appId,String auditAmt) throws IOException {
+	public static String sendRequest(String appId,String auditAmt) throws IOException {
 		String result = "";
 		int responseCode  = 500;
 		//try {
@@ -130,6 +147,8 @@ public class TrialLoanApplyServie {
             //POST请求
             DataOutputStream out = new DataOutputStream(connection.getOutputStream());
             JSONObject obj = new JSONObject();
+           /* obj.element("quota_id", URLEncoder.encode(appId,"gbk"));
+            obj.element("updated_quota", URLEncoder.encode(auditAmt,"gbk"));*/
             obj.element("quota_id", appId);
             obj.element("updated_quota", auditAmt);
             out.writeBytes(obj.toString());
@@ -156,17 +175,20 @@ public class TrialLoanApplyServie {
 //        } catch (Exception e) {
 //            e.printStackTrace();
 //        }
-		return responseCode;
+		return result;
 	}
 	
 	
-	public static void main(String[] args) {
+	/*public static void main(String[] args) {
 		try {
-			System.out.println(sendRequest("3","3000"));
+			sendRequest("70","332");
 		} catch (IOException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	}
+	}*/
+	
+
 	
 	public List<SupplementaryInvestigationData> selectSuppleMentInformation(HttpServletRequest request){
 		String id = request.getParameter("appId");
@@ -710,7 +732,7 @@ public class TrialLoanApplyServie {
 	   		Map<String, String> map = new HashMap<String, String>();
 	   		
 	   		// 正常报文
-	   		String result =getHttpsResult(personId,name,apiKey,mobileNum,cardId);
+	   		String result =getHttpsResult(personId.trim(),name.trim(),apiKey.trim(),mobileNum.trim(),cardId.trim());
 	   		
 	   		// 测试 报文
 			//String result =   "{\"data\":{\"actionScore\":\"36\",\"bseInfoScore\":\"34\",\"credooScore\":\"564\",\"finRequireScore\":\"36\",\"payAbilityScore\":\"36\",\"performScore\":\"36\",\"trendScore\":\"36\",\"updateTime\":\"2017-08-11T16:59:01Z\",\"virAssetScore\":\"36\"},\"msg\":\"接口调用成功\",\"ret\":0}";
@@ -740,19 +762,17 @@ public class TrialLoanApplyServie {
 
    
    // get result
-   public  String getHttpsResult(String personId,String name,String apiKey,String mobileNum,String cardId){
+   public  static String getHttpsResult(String personId,String name,String apiKey,String mobileNum,String cardId){
 	   String result = "";
-	   
-	   String url = "https://www.kuaixin360.com/api/1.0/personal/credoo?personalId="+personId+"&name="+name+"&apiKey="+apiKey+"&mobileNum="+mobileNum+"&cardId="+cardId+"";
-	   System.out.println(url);
-	   
 	   try {
+		   name = URLEncoder.encode(name,"UTF-8");
+		   String url = "https://www.kuaixin360.com/api/1.0/personal/credoo?personalId="+personId+"&name="+name+"&apiKey="+apiKey+"&mobileNum="+mobileNum+"&cardId="+cardId+"";
+		   System.out.println(url);
 		   // 创建URL对象
 		   URL reqURL = new URL(url); 
 		   HttpsURLConnection httpsConn = (HttpsURLConnection)reqURL.openConnection();
-
 		   // 取得该连接的输入流，以读取响应内容 
-		   InputStreamReader insr = new InputStreamReader(httpsConn.getInputStream(), "utf-8");
+		   InputStreamReader insr = new InputStreamReader(httpsConn.getInputStream());
 
 		   // 读取服务器的响应内容并显示
 		   int respInt = insr.read();
@@ -769,12 +789,20 @@ public class TrialLoanApplyServie {
 	   return result;
    }
    
+   /*public static void main(String[] args) {
+	   https://www.kuaixin360.com/api/1.0/personal/credoo?personalId=430102197111062010&name=
+		   谭俊峰&apiKey=25e7d8ad2462481fb2ce11ac3dc069f5&mobileNum=18192349450&cardId=4340624220484768
+	   getHttpsResult("430102197111062010","谭俊峰","25e7d8ad2462481fb2ce11ac3dc069f5","18192349450","4340624220484768");
+   }*/
+
    
    
     // 保存提额申请记录
     public void saveApply(HttpServletRequest request){
     	TrialLoanApy apy = new TrialLoanApy();
-    	apy.setId(request.getParameter("id"));
+    	
+    	// uuid
+    	apy.setId(IDGenerator.generateID());
     	apy.setCustomerName(request.getParameter("customerName"));
     	apy.setCardId(request.getParameter("sfzh"));
     	
@@ -782,13 +810,16 @@ public class TrialLoanApplyServie {
     	String cardId = IdCard.convertIdcarBy15bit(request.getParameter("sfzh").trim());
     	String sex = IdCard.getGenderByIdCard(cardId);
 		int age = IdCard.getAgeByIdCard(cardId);
-		
-    	apy.setPhoneNo(request.getParameter("phoneNo"));
-    	apy.setSex(sex);
+		apy.setSex(sex);
     	apy.setAge(age+"");
+    	
+    	apy.setPhoneNo(request.getParameter("phoneNo"));
     	apy.setCardNum(request.getParameter("cardNum"));
     	apy.setApplyAmt(request.getParameter("applyAmt"));
     	apy.setLoanTerm(request.getParameter("loanTerm"));
+    	
+    	// 提额id 
+    	apy.setQuotaId(request.getParameter("id"));
     	trialLoanApplyDao.insertCustomerLoanApply(apy);
     }
     
@@ -824,11 +855,11 @@ public class TrialLoanApplyServie {
 			int kuhxd = 0;
 
 			// 获取客户好信度
-			Map<String, String> map = getGoodReliability(sfzh.trim(),
-														 customerName.trim(),
+			Map<String, String> map = getGoodReliability(sfzh,
+														 customerName,
 														 "25e7d8ad2462481fb2ce11ac3dc069f5",
-														 phoneNo.trim(),
-														 cardNum.trim());
+														 phoneNo,
+														 cardNum);
 
 			// 查询成功
 			if ("0".equals(map.get("ret").toString())) {
@@ -849,4 +880,42 @@ public class TrialLoanApplyServie {
 		return result;
 	}
     
+    
+    
+    /**
+     * 抢单
+     */
+    public String grabOrder(String order,String customerManagerId,String cardId){
+    	String status;
+		// 开启新事物，保证交易记录存在
+		// DefaultTransactionDefinition def = new DefaultTransactionDefinition();
+		// def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
+		// TransactionStatus status = txManager.getTransaction(def);
+		//try {
+			// 锁定订单 lock order
+			//trialLoanApplyDao.lockCustomerLoanApplyById(order);
+			
+			// 查询是否已经建立的关系
+    		int i = trialLoanApplyDao.selectCustomerRelationCountList(cardId);
+    		System.out.println("查询条目数："+i);
+			if(i == 0){
+				// 建立客户与客户经理关联关系
+				CustomerBelogsRelation relation = new CustomerBelogsRelation();
+				relation.setCardId(cardId);
+				relation.setCustomerManagerId(customerManagerId);
+				commonDao.insertObject(relation);
+				status = "success";
+			}else{
+				status = "fail";
+			}
+			
+			
+			// 提额单关联客户经理
+			//trialLoanApplyDao.updateCustomerLoadApplyById(order,customerManagerId);
+			//txManager.commit(status);
+		//} catch (Exception e) {
+			//txManager.rollback(status);
+		//}
+			return status;
+    }
 }

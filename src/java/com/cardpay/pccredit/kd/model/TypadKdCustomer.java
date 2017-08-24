@@ -8,7 +8,7 @@ private String ID;
 private String CUSTOMER_NAME;
 private String CARD_ID;
 private String PHONE_NO;
-private BigDecimal APPLY_AMT;
+private String APPLY_AMT;
 private String LOAN_TERM;
 private Date APPLY_TIME;
 private String REMARKS;
@@ -71,46 +71,10 @@ private BigDecimal TOTAL_ASSETS;
 private BigDecimal TOTAL_LIAB;
 private BigDecimal PAY_PRIVATE_USE;
 private String UPLOAD_FILE_NAME;
-private BigDecimal AUDIT_AMT;
+private String AUDIT_AMT;
 private Date AUDIT_TIME;
 private String SEX;
 private String AGE;
-public String getAGE() {
-	return AGE;
-}
-public void setAGE(String aGE) {
-	AGE = aGE;
-}
-public String getSEX() {
-	return SEX;
-}
-public void setSEX(String sEX) {
-	SEX = sEX;
-}
-public BigDecimal getAUDIT_AMT() {
-	return AUDIT_AMT;
-}
-public void setAUDIT_AMT(BigDecimal aUDIT_AMT) {
-	AUDIT_AMT = aUDIT_AMT;
-}
-public Date getAUDIT_TIME() {
-	return AUDIT_TIME;
-}
-public void setAUDIT_TIME(Date aUDIT_TIME) {
-	AUDIT_TIME = aUDIT_TIME;
-}
-public String getUPLOAD_FILE_NAME() {
-	return UPLOAD_FILE_NAME;
-}
-public void setUPLOAD_FILE_NAME(String uPLOAD_FILE_NAME) {
-	UPLOAD_FILE_NAME = uPLOAD_FILE_NAME;
-}
-public String getLOAN_TERM() {
-	return LOAN_TERM;
-}
-public void setLOAN_TERM(String lOAN_TERM) {
-	LOAN_TERM = lOAN_TERM;
-}
 public String getID() {
 	return ID;
 }
@@ -135,19 +99,18 @@ public String getPHONE_NO() {
 public void setPHONE_NO(String pHONE_NO) {
 	PHONE_NO = pHONE_NO;
 }
-public BigDecimal getAPPLY_AMT() {
+public String getAPPLY_AMT() {
 	return APPLY_AMT;
 }
-public void setAPPLY_AMT(BigDecimal aPPLY_AMT) {
+public void setAPPLY_AMT(String aPPLY_AMT) {
 	APPLY_AMT = aPPLY_AMT;
 }
-public String getAPPLY_ID1() {
-	return APPLY_ID1;
+public String getLOAN_TERM() {
+	return LOAN_TERM;
 }
-public void setAPPLY_ID1(String aPPLY_ID1) {
-	APPLY_ID1 = aPPLY_ID1;
+public void setLOAN_TERM(String lOAN_TERM) {
+	LOAN_TERM = lOAN_TERM;
 }
-
 public Date getAPPLY_TIME() {
 	return APPLY_TIME;
 }
@@ -171,6 +134,12 @@ public String getAPPLY_ID() {
 }
 public void setAPPLY_ID(String aPPLY_ID) {
 	APPLY_ID = aPPLY_ID;
+}
+public String getAPPLY_ID1() {
+	return APPLY_ID1;
+}
+public void setAPPLY_ID1(String aPPLY_ID1) {
+	APPLY_ID1 = aPPLY_ID1;
 }
 public String getFILE_NAME() {
 	return FILE_NAME;
@@ -357,6 +326,36 @@ public BigDecimal getPAY_PRIVATE_USE() {
 }
 public void setPAY_PRIVATE_USE(BigDecimal pAY_PRIVATE_USE) {
 	PAY_PRIVATE_USE = pAY_PRIVATE_USE;
+}
+public String getUPLOAD_FILE_NAME() {
+	return UPLOAD_FILE_NAME;
+}
+public void setUPLOAD_FILE_NAME(String uPLOAD_FILE_NAME) {
+	UPLOAD_FILE_NAME = uPLOAD_FILE_NAME;
+}
+public String getAUDIT_AMT() {
+	return AUDIT_AMT;
+}
+public void setAUDIT_AMT(String aUDIT_AMT) {
+	AUDIT_AMT = aUDIT_AMT;
+}
+public Date getAUDIT_TIME() {
+	return AUDIT_TIME;
+}
+public void setAUDIT_TIME(Date aUDIT_TIME) {
+	AUDIT_TIME = aUDIT_TIME;
+}
+public String getSEX() {
+	return SEX;
+}
+public void setSEX(String sEX) {
+	SEX = sEX;
+}
+public String getAGE() {
+	return AGE;
+}
+public void setAGE(String aGE) {
+	AGE = aGE;
 }
 
 

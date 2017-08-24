@@ -27,7 +27,7 @@
 		<property name="driverClass" value="com.mysql.jdbc.Driver"/>
 		<property name="jdbcUrl" value="jdbc:mysql://139.196.31.230:3306/pccredit_yq1?useUnicode=true&amp;characterEncoding=utf-8"/>
 		<property name="user" value="root"/>
-		<property name="password" value="QkjrAdmins5"/>
+		<property name="password" value="Qk#13w79"/>
 	</bean>
 
 	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">

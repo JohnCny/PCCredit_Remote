@@ -1,1 +1,1 @@
-[{'verCode':2,'verName':'1.2.1','apkPath':'http://139.196.31.230:8080/PCCredit/ipad/ks/downLoadApk.json'}]
+[{'verCode':3,'verName':'1.2.1','apkPath':'http://139.196.31.230:8080/PCCredit/ipad/ks/downLoadApk.json'}]

@@ -55,16 +55,50 @@
 <result column="AGE" property="AGE" />
   </resultMap>
 
-
+<!-- 提额申请查询 -->
 <select id="selectSqCustomer" resultMap="TypadKdCustomer">
-select distinct  b.ID,b.CUSTOMER_NAME,b.CARD_ID,b.PHONE_NO,b.APPLY_AMT,b.LOAN_TERM,b.APPLY_TIME,b.LOAN_STATE,b.REMARKS,b.AGE,b.SEX,
+<!-- select distinct  b.ID,b.CUSTOMER_NAME,b.CARD_ID,b.PHONE_NO,b.APPLY_AMT,b.LOAN_TERM,b.APPLY_TIME,b.LOAN_STATE,b.REMARKS,b.AGE,b.SEX,
 L.APPLY_ID as APPLY_ID ,s.APPLY_ID as APPLY_ID1
  from customer_loan_apply b left join loan_data_upload l on l.apply_id=b.id
 left join supplementary_survey_data s on s.apply_id=b.id
-where LOAN_STATE in('0','1')
-<if test="chineseName != null and chineseName != '' ">
-	 and b.CUSTOMER_NAME = #{chineseName}
-  </if>
+where LOAN_STATE in('0','1') -->
+select b.*
+ from customer_loan_apply b ,customer_belogs_relation c
+where b.LOAN_STATE in('0','1') and b.CARD_ID = c.card_id
+	<if test="chineseName != null and chineseName != '' ">
+	   and b.CUSTOMER_NAME = #{chineseName}
+  	</if>
+  	<if test="customerManagerId != null and customerManagerId != '' ">
+	   and c.customer_manager_id = #{customerManagerId}
+  	</if>
+</select>
+
+
+<select id="selectSqCustomerHistory" resultMap="TypadKdCustomer">
+<!-- select distinct  b.ID,b.CUSTOMER_NAME,b.CARD_ID,b.PHONE_NO,b.APPLY_AMT,b.LOAN_TERM,b.APPLY_TIME,b.LOAN_STATE,b.REMARKS,b.AGE,b.SEX,b.AUDIT_TIME,b.AUDIT_AMT,
+L.APPLY_ID as APPLY_ID ,s.APPLY_ID as APPLY_ID1
+ from customer_loan_apply b left join loan_data_upload l on l.apply_id=b.id
+left join supplementary_survey_data s on s.apply_id=b.id
+where LOAN_STATE in('2','3','4') -->
+select b.*
+ from customer_loan_apply b ,customer_belogs_relation c
+where b.LOAN_STATE in('2','3','4') and b.CARD_ID = c.card_id
+	<if test="chineseName != null and chineseName != '' ">
+	 	and b.CUSTOMER_NAME = #{chineseName}
+  	</if>
+  	<if test="customerManagerId != null and customerManagerId != '' ">
+	   and c.customer_manager_id = #{customerManagerId}
+  	</if>
+</select>
+
+<!-- 抢单查询 -->
+<select id="selectOrder" resultMap="TypadKdCustomer">
+select b.*
+ from customer_loan_apply b 
+where b.LOAN_STATE = '0' and b.card_id not in (select t.card_id from customer_belogs_relation t)
+	<if test="chineseName != null and chineseName != '' ">
+	 	and b.CUSTOMER_NAME = #{chineseName}
+	</if>
 </select>
 
 <select id="selectSqCustomerBcl" resultMap="TypadKdCustomer">

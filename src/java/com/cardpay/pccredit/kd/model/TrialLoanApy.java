@@ -25,9 +25,16 @@ public class TrialLoanApy {
 	  private String cardNum;
 	  private String sex;
 	  private String age;
+	  private String quotaId;//提额id
 	  
 	  
 	  
+	public String getQuotaId() {
+		return quotaId;
+	}
+	public void setQuotaId(String quotaId) {
+		this.quotaId = quotaId;
+	}
 	public String getId() {
 		return id;
 	}

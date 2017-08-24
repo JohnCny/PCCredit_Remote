@@ -9,7 +9,9 @@ import com.wicresoft.util.annotation.Mapper;
 
 @Mapper
 public interface TypadKdCustomerDao {
-List<TypadKdCustomer>selectSqCustomer(@Param(value = "chineseName") String chineseName);
+List<TypadKdCustomer>selectSqCustomer(@Param(value = "chineseName") String chineseName,@Param(value = "customerManagerId") String customerManagerId);
+List<TypadKdCustomer>selectSqCustomerHistory(@Param(value = "chineseName") String chineseName,@Param(value = "customerManagerId") String customerManagerId);
+List<TypadKdCustomer>selectOrder(@Param(value = "chineseName") String chineseName);
 List<TypadKdCustomer> selectImageType(@Param(value = "id") String id);
 void inserIma (TypadKdCustomer t);
 TypadKdCustomer selectImaById(@Param(value = "id") String id);

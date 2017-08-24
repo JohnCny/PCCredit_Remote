@@ -63,7 +63,6 @@ public class TrialLoanApplyController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/ipad/ks/update.json")
-	@JRadOperation(JRadOperation.APPROVE)
 	public String update(HttpServletRequest request) {
 		JRadReturnMap returnMap = new JRadReturnMap();
 		if (returnMap.isSuccess()) {
@@ -73,6 +72,7 @@ public class TrialLoanApplyController {
 				returnMap.put("amt",request.getParameter("amt"));*/
 				returnMap.put("message","提交成功");
 			} catch (Exception e) {
+				e.printStackTrace();
 				returnMap.put("message","提交失败");
 			}
 		}
@@ -110,10 +110,21 @@ public class TrialLoanApplyController {
 		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
 		
 		
-		// 验证表单参数 
+		// 验证表单参数  补充验证 表单参数不能为空
 		// num
 		Map<String,String>  map1 = com.cardpay.pccredit.kd.constant.Constant.ATT_NUM;
 		Map<String,String>  nummap = returnNumMap(supplementarySurveyData);
+		for (String key : nummap.keySet()) {  
+			if(StringUtils.isEmpty(nummap.get(key))){
+				result.setStatus("fail");
+				result.setReason(map1.get(key)+"不能为空,请重新填写！");
+				map.put("result",result);
+				JSONObject json = JSONObject.fromObject(map, jsonConfig);
+				return json.toString();
+			}
+		}
+		
+		
 		for (String key : nummap.keySet()) {  
 			if(!IsNum(nummap.get(key))){
 				result.setStatus("fail");
@@ -127,6 +138,17 @@ public class TrialLoanApplyController {
 		// double 
 		Map<String,String>  map2 = com.cardpay.pccredit.kd.constant.Constant.ATT_DOUBLE;
 		Map<String,String>  doublemap = returnDobleMap(supplementarySurveyData);
+		
+		for (String key : doublemap.keySet()) {  
+			if(StringUtils.isEmpty(doublemap.get(key))){
+				result.setStatus("fail");
+				result.setReason(map2.get(key)+"不能为空,请重新填写！");
+				map.put("result",result);
+				JSONObject json = JSONObject.fromObject(map, jsonConfig);
+				return json.toString();
+			}
+		}  
+		
 		for (String key : doublemap.keySet()) {  
 			if(!IsDouble(doublemap.get(key))){
 				result.setStatus("fail");
@@ -215,7 +237,6 @@ public class TrialLoanApplyController {
      */
     @ResponseBody
 	@RequestMapping(value = "/ipad/ks/getQuotaApply.json")
-	@JRadOperation(JRadOperation.APPROVE)
 	public String getQuotaApply(HttpServletRequest request) {
 		JRadReturnMap returnMap = new JRadReturnMap();
 		Result result = new  Result();
@@ -327,7 +348,6 @@ public class TrialLoanApplyController {
      */
     @ResponseBody
    	@RequestMapping(value = "/ipad/ks/getCreditAmt.json")
-   	@JRadOperation(JRadOperation.APPROVE)
    	public String getCreditAmt(HttpServletRequest request) {
    		JRadReturnMap returnMap = new JRadReturnMap();
    		Result result = new  Result();
@@ -399,12 +419,18 @@ public class TrialLoanApplyController {
    		return json.toString();
    	}
     
-    
+    /**
+     * 下载pad apk 安装程序
+     * @param request
+     * @param response
+     * @return
+     * @throws Exception
+     */
     @ResponseBody
 	@RequestMapping(value = "/ipad/ks/downLoadApk.json")
 	public String downLoadApk(HttpServletRequest request,HttpServletResponse response) throws Exception {
 		String path = "/home/yunPad.apk";
-		System.out.println("*****下载apk");
+		System.out.println("*****下载apk安装程序*****");
 		File file = new File(path);
 		if(file.exists()){
 			byte[] buff = new byte[2048]; 
@@ -427,4 +453,72 @@ public class TrialLoanApplyController {
 		return null;
 	}
     
+    /**
+     * 抢单
+     * 绑定 客户经理 id 
+     */
+    @ResponseBody
+   	@RequestMapping(value = "/ipad/ks/grabOrder.json")
+   	public String grabOrder(HttpServletRequest request) {
+   		JRadReturnMap returnMap = new JRadReturnMap();
+   		Result result = new  Result();
+   		JsonConfig jsonConfig = new JsonConfig();
+   		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
+   		
+   		System.out.println(request.getParameter("order"));// 单号
+   		System.out.println(request.getParameter("customerManagerId"));// 客户经理
+   		System.out.println(request.getParameter("cardId"));// 身份证号
+   		
+       	
+       	if(StringUtils.isEmpty(request.getParameter("order"))){
+       		result.setStatus("fail");
+   			result.setReason("单号不能为空");
+   			returnMap.put("result",result);
+   			JSONObject json = JSONObject.fromObject(returnMap, jsonConfig);
+   			return json.toString();
+       	}
+       	
+       	if(StringUtils.isEmpty(request.getParameter("customerManagerId"))){
+       		result.setStatus("fail");
+   			result.setReason("客户经理不能为空");
+   			returnMap.put("result",result);
+   			JSONObject json = JSONObject.fromObject(returnMap, jsonConfig);
+   			return json.toString();
+       	}
+       	
+    	if(StringUtils.isEmpty(request.getParameter("cardId"))){
+       		result.setStatus("fail");
+   			result.setReason("身份证号不能为空");
+   			returnMap.put("result",result);
+   			JSONObject json = JSONObject.fromObject(returnMap, jsonConfig);
+   			return json.toString();
+       	}
+   		
+   		if (returnMap.isSuccess()) {
+   			try {
+				String status = trialLoanApplyServie.grabOrder(
+						request.getParameter("order"),
+						request.getParameter("customerManagerId"),
+						request.getParameter("cardId"));
+				
+				if (status.equals("success")) {
+					result.setStatus("success");
+					result.setReason("抢单成功");
+				} else {
+					result.setStatus("fail");
+					result.setReason("抢单失败");
+				}
+				returnMap.put("result", result);
+   			} catch (Exception e) {
+   				result.setStatus("fail");
+   				result.setReason("查询失败:"+e.getMessage());
+   				returnMap.put("result",result);
+   				e.printStackTrace();
+   			}
+   		}
+   		
+   		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
+   		JSONObject json = JSONObject.fromObject(returnMap, jsonConfig);
+   		return json.toString();
+   	}
 }

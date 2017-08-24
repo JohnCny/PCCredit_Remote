@@ -38,9 +38,22 @@ public class TypadKdCustomerServie {
 	private TypadKdCustomerDao commonDao;
 	public List<TypadKdCustomer>selectSqCustomer(HttpServletRequest request){
 		String chineseName = request.getParameter("chineseName");
-		return commonDao.selectSqCustomer(chineseName);
-		
+		String customerManagerId = request.getParameter("userId");
+		return commonDao.selectSqCustomer(chineseName,customerManagerId);
 	}
+	
+	public List<TypadKdCustomer>selectSqCustomerHistory(HttpServletRequest request){
+		String chineseName = request.getParameter("chineseName");
+		String customerManagerId = request.getParameter("userId");
+		return commonDao.selectSqCustomerHistory(chineseName,customerManagerId);
+	}
+	
+	public List<TypadKdCustomer>selectOrder(HttpServletRequest request){
+		String chineseName = request.getParameter("chineseName");
+		//String customerManagerId = request.getParameter("userId"); 抢单部分去掉
+		return commonDao.selectOrder(chineseName);
+	}
+	
 	public List<TypadKdCustomer> selectImageType( String id){
 		
 		return commonDao.selectImageType(id);

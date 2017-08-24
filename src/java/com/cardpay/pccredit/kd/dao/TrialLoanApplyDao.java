@@ -31,11 +31,17 @@ public interface TrialLoanApplyDao {
 	public List<CustomerStockForm> selectCustomerStock(@Param(value = "cardId") String cardId);
 	
 	// 根据 appId更新评估额度到提额申请表中
-	
 	public void updateCustomerApplyCreditAmt(@Param(value = "id") String id,
 			  @Param(value = "amt") int amt,@Param(value = "msg") String msg);
 	
 	public List<TrialLoanApply> selectTrialLoanApplyList(@Param(value = "appId") String appId);
 	
 	void insertCustomerLoanApply(TrialLoanApy t);
+	
+	// lock 提额表
+	List<TrialLoanApply> lockCustomerLoanApplyById(@Param(value = "id") String id);
+	
+	void updateCustomerLoadApplyById(@Param(value = "order") String order,@Param(value = "customerManagerId") String customerManagerId);
+	
+	int selectCustomerRelationCountList(@Param(value = "cardId") String cardId);
 }
