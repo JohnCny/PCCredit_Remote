@@ -42,4 +42,6 @@ public interface TrialLoanApplyDao {
 	List<TrialLoanApply> lockCustomerLoanApplyById(@Param(value = "id") String id);
 	
 	void updateCustomerLoadApplyById(@Param(value = "order") String order,@Param(value = "customerManagerId") String customerManagerId);
+	
+	int selectCustomerRelationCountList(@Param(value = "cardId") String cardId);
 }

@@ -467,6 +467,7 @@ public class TrialLoanApplyController {
    		
    		System.out.println(request.getParameter("order"));// 单号
    		System.out.println(request.getParameter("customerManagerId"));// 客户经理
+   		System.out.println(request.getParameter("cardId"));// 身份证号
    		
        	
        	if(StringUtils.isEmpty(request.getParameter("order"))){
@@ -484,13 +485,30 @@ public class TrialLoanApplyController {
    			JSONObject json = JSONObject.fromObject(returnMap, jsonConfig);
    			return json.toString();
        	}
+       	
+    	if(StringUtils.isEmpty(request.getParameter("cardId"))){
+       		result.setStatus("fail");
+   			result.setReason("身份证号不能为空");
+   			returnMap.put("result",result);
+   			JSONObject json = JSONObject.fromObject(returnMap, jsonConfig);
+   			return json.toString();
+       	}
    		
    		if (returnMap.isSuccess()) {
    			try {
-   				trialLoanApplyServie.grabOrder(request.getParameter("order"),request.getParameter("customerManagerId"));
-   				result.setStatus("success");
-   				result.setReason("抢单成功");
-   				returnMap.put("result",result);
+				String status = trialLoanApplyServie.grabOrder(
+						request.getParameter("order"),
+						request.getParameter("customerManagerId"),
+						request.getParameter("cardId"));
+				
+				if (status.equals("success")) {
+					result.setStatus("success");
+					result.setReason("抢单成功");
+				} else {
+					result.setStatus("fail");
+					result.setReason("抢单失败");
+				}
+				returnMap.put("result", result);
    			} catch (Exception e) {
    				result.setStatus("fail");
    				result.setReason("查询失败:"+e.getMessage());

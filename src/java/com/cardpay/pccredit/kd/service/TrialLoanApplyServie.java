@@ -67,6 +67,7 @@ import com.cardpay.pccredit.kd.constant.Constant;
 import com.cardpay.pccredit.kd.constant.CustomerStockForm;
 import com.cardpay.pccredit.kd.constant.StockForm;
 import com.cardpay.pccredit.kd.dao.TrialLoanApplyDao;
+import com.cardpay.pccredit.kd.model.CustomerBelogsRelation;
 import com.cardpay.pccredit.kd.model.Result;
 import com.cardpay.pccredit.kd.model.SupplementaryInvestigationData;
 import com.cardpay.pccredit.kd.model.SupplementarySurveyData;
@@ -146,6 +147,8 @@ public class TrialLoanApplyServie {
             //POST请求
             DataOutputStream out = new DataOutputStream(connection.getOutputStream());
             JSONObject obj = new JSONObject();
+           /* obj.element("quota_id", URLEncoder.encode(appId,"gbk"));
+            obj.element("updated_quota", URLEncoder.encode(auditAmt,"gbk"));*/
             obj.element("quota_id", appId);
             obj.element("updated_quota", auditAmt);
             out.writeBytes(obj.toString());
@@ -176,14 +179,14 @@ public class TrialLoanApplyServie {
 	}
 	
 	
-	public static void main(String[] args) {
+	/*public static void main(String[] args) {
 		try {
 			sendRequest("70","332");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	}
+	}*/
 	
 
 	
@@ -730,7 +733,6 @@ public class TrialLoanApplyServie {
 	   		
 	   		// 正常报文
 	   		String result =getHttpsResult(personId.trim(),name.trim(),apiKey.trim(),mobileNum.trim(),cardId.trim());
-	   		//System.out.println("报文:"+result);
 	   		
 	   		// 测试 报文
 			//String result =   "{\"data\":{\"actionScore\":\"36\",\"bseInfoScore\":\"34\",\"credooScore\":\"564\",\"finRequireScore\":\"36\",\"payAbilityScore\":\"36\",\"performScore\":\"36\",\"trendScore\":\"36\",\"updateTime\":\"2017-08-11T16:59:01Z\",\"virAssetScore\":\"36\"},\"msg\":\"接口调用成功\",\"ret\":0}";
@@ -760,7 +762,7 @@ public class TrialLoanApplyServie {
 
    
    // get result
-   public  String getHttpsResult(String personId,String name,String apiKey,String mobileNum,String cardId){
+   public  static String getHttpsResult(String personId,String name,String apiKey,String mobileNum,String cardId){
 	   String result = "";
 	   try {
 		   name = URLEncoder.encode(name,"UTF-8");
@@ -787,7 +789,11 @@ public class TrialLoanApplyServie {
 	   return result;
    }
    
-   
+   /*public static void main(String[] args) {
+	   https://www.kuaixin360.com/api/1.0/personal/credoo?personalId=430102197111062010&name=
+		   谭俊峰&apiKey=25e7d8ad2462481fb2ce11ac3dc069f5&mobileNum=18192349450&cardId=4340624220484768
+	   getHttpsResult("430102197111062010","谭俊峰","25e7d8ad2462481fb2ce11ac3dc069f5","18192349450","4340624220484768");
+   }*/
 
    
    
@@ -879,20 +885,37 @@ public class TrialLoanApplyServie {
     /**
      * 抢单
      */
-    public String grabOrder(String order,String customerManagerId){
+    public String grabOrder(String order,String customerManagerId,String cardId){
+    	String status;
 		// 开启新事物，保证交易记录存在
-		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
-		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
-		TransactionStatus status = txManager.getTransaction(def);
-		try {
+		// DefaultTransactionDefinition def = new DefaultTransactionDefinition();
+		// def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
+		// TransactionStatus status = txManager.getTransaction(def);
+		//try {
 			// 锁定订单 lock order
-			trialLoanApplyDao.lockCustomerLoanApplyById(order);
-			// 关联客户经理
-			trialLoanApplyDao.updateCustomerLoadApplyById(order,customerManagerId);
-			txManager.commit(status);
-		} catch (Exception e) {
-			txManager.rollback(status);
-		}
-		return null;
+			//trialLoanApplyDao.lockCustomerLoanApplyById(order);
+			
+			// 查询是否已经建立的关系
+    		int i = trialLoanApplyDao.selectCustomerRelationCountList(cardId);
+    		System.out.println("查询条目数："+i);
+			if(i == 0){
+				// 建立客户与客户经理关联关系
+				CustomerBelogsRelation relation = new CustomerBelogsRelation();
+				relation.setCardId(cardId);
+				relation.setCustomerManagerId(customerManagerId);
+				commonDao.insertObject(relation);
+				status = "success";
+			}else{
+				status = "fail";
+			}
+			
+			
+			// 提额单关联客户经理
+			//trialLoanApplyDao.updateCustomerLoadApplyById(order,customerManagerId);
+			//txManager.commit(status);
+		//} catch (Exception e) {
+			//txManager.rollback(status);
+		//}
+			return status;
     }
 }

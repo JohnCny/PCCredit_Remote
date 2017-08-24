@@ -164,4 +164,10 @@
 <update id="updateCustomerLoadApplyById">
    UPDATE customer_loan_apply set CUSTOMER_MANAGER_ID = #{customerManagerId}  WHERE id=#{order}
 </update>
+
+
+
+<select id="selectCustomerRelationCountList"  resultType="int">
+    select count(*) from (select card_id from customer_belogs_relation where card_id = #{cardId} ) a
+</select>
 </mapper>
